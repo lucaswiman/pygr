@@ -119,4 +119,4 @@ if __name__ == '__main__':
     parser = option_parser()
     options, args = parser.parse_args()
 
-    print options
+    print(options)

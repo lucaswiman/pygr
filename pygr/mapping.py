@@ -39,6 +39,7 @@ class PathList(list):
             self.edge.extend(len(l) * [None])
 
 
+@classutil.total_ordering_from_cmp
 class Edge(list):
     "Interface to edge information."
     isDirected = False
@@ -65,17 +66,17 @@ class Edge(list):
     def __cmp__(self, other): # DO WE NEED TO COMPARE EDGE INFO??
         if not isinstance(other, Edge): # CAN ONLY COMPARE A PAIR OF EDGES
             return -1
-        diff = cmp(self.graph, other.graph)
+        diff = classutil.compare(self.graph, other.graph)
         if diff: # NOT IN THE SAME GRAPH...
             return diff
         elif self.isDirected: # IF DIRECTED, JUST COMPARE IN CURRENT ORDER
-            return tuple.__cmp__(self, other)
+            return tuple.lt(self, other) - tuple.gt(self, other)
         else: # UNDIRECTED COMPARISON REQUIRES PUTTING BOTH IN SAME ORDER
             me = [i for i in self]
             you = [i for i in other]
             me.sort()
             you.sort()
-            return cmp(me, you)
+            return classutil.compare(me, you)
 
     # NEEDS SCHEMA SUPPORT: RETURN A SINGLE SCHEMA TUPLE DESCRIBING THIS EDGE.
 
@@ -658,7 +659,7 @@ class Mapping(object):
 def graph_cmp(self, other):
     'compare two graph dictionaries'
     import sys
-    diff = cmp(len(self), len(other))
+    diff = classutil.compare(len(self), len(other))
     if diff != 0:
         print('len diff:', len(self), len(other), file=sys.stderr)
         return diff
@@ -668,13 +669,14 @@ def graph_cmp(self, other):
         except KeyError:
             print('other missing key', file=sys.stderr)
             return 1
-        diff = cmp(d, d2)
+        diff = classutil.compare(d, d2)
         if diff != 0:
             print('value diff', d, d2, file=sys.stderr)
             return diff
     return 0
 
 
+@classutil.total_ordering_from_cmp
 class IDNodeDict(object):
     """2nd layer graph interface implementation using proxy dict.
        e.g. shelve."""
@@ -866,6 +868,7 @@ def graph_setitem(self, node, target):
 g[n][o]=edge.')
 
 
+@classutil.total_ordering_from_cmp
 class Graph(object):
     """Top layer graph interface implemenation using proxy dict.
        Works with dict, shelve, any mapping interface."""

@@ -1,7 +1,7 @@
 from __future__ import absolute_import, print_function
 
 import datetime
-import md5
+import hashlib
 import os
 import pickle
 import socket

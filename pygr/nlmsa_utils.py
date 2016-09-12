@@ -4,8 +4,8 @@ import os
 import types
 from collections import MutableMapping
 
-import .classutil
-import .logger
+from . import classutil
+from . import logger
 
 
 class NLMSASeqList(list):
@@ -53,7 +53,8 @@ class EmptyAlignmentError(ValueError):
     pass
 
 
-class EmptySlice:
+@classutil.total_ordering_from_cmp
+class EmptySlice(object):
     'Empty slice for use by NLMSASlice'
 
     def __init__(self, seq):
@@ -102,7 +103,7 @@ class EmptySlice:
         return []
 
     def __cmp__(self, other):
-        return cmp(self.seq, other.seq)
+        return classutil.compare(self.seq, other.seq)
 
     def rawIvals(self):
         return []

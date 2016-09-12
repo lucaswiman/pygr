@@ -2,6 +2,7 @@ from __future__ import absolute_import, print_function
 
 import types
 from .sequtil import *
+from . import classutil
 
 
 NOT_ON_SAME_PATH = -2
@@ -148,6 +149,7 @@ class LetterEdgeDescriptor(object):
             return edge._seqs
 
 
+@classutil.total_ordering_from_cmp
 class LetterEdge(object):
     "represents an edge from origin -> target. seqs returns its sequences"
     seqs = LetterEdgeDescriptor()
@@ -183,7 +185,7 @@ class LetterEdge(object):
                 return 0 # REPORT A MATCH
         except AttributeError: # other MUST BE A DIFFERENT TYPE, SO NO MATCH
             pass
-        return cmp(id(self), id(other))
+        return classutil.compare(id(self), id(other))
 
 
 def absoluteSlice(seq, start, stop):
@@ -256,6 +258,7 @@ class AbsIntervalDescr(object):
             return -(seq.stop), -(seq.start)
 
 
+@classutil.total_ordering_from_cmp
 class SeqPath(object):
     '''Base class for specifying a path, ie. sequence interval.
     This implementation takes a sequence object as initializer
@@ -396,7 +399,7 @@ class SeqPath(object):
         if not isinstance(other, SeqPath):
             return -1
         if self.path is other.path:
-            return cmp((self.start, self.stop), (other.start, other.stop))
+            return classutil.compare((self.start, self.stop), (other.start, other.stop))
         else:
             return NOT_ON_SAME_PATH
             #raise TypeError('SeqPath not comparable, not on same path: %s, %s'

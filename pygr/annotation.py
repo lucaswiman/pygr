@@ -45,6 +45,7 @@ class AnnotationSeqtypeDescr(object):
         return obj._anno_seq.seqtype()
 
 
+@classutil.total_ordering_from_cmp
 class AnnotationSeq(SeqPath):
     'base class representing an annotation'
     start = 0
@@ -68,9 +69,9 @@ class AnnotationSeq(SeqPath):
     def __cmp__(self, other):
         if not isinstance(other, AnnotationSeq):
             return -1
-        if cmp(self.sequence, other.sequence) == 0:
+        if classutil.compare(self.sequence, other.sequence) == 0:
             if self.id == other.id and self.db is other.db:
-                return cmp((self.start, self.stop), (other.start, other.stop))
+                return classutil.compare((self.start, self.stop), (other.start, other.stop))
         return NOT_ON_SAME_PATH
 
     def strslice(self, start, stop):

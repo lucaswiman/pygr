@@ -3,9 +3,32 @@ from __future__ import absolute_import, print_function
 import os
 import sys
 import tempfile
+from functools import total_ordering
 from weakref import WeakValueDictionary
 from . import dbfile
 from . import logger
+
+try:
+    compare = cmp
+except NameError:
+    # For Python 3. See http://codegolf.stackexchange.com/a/49779
+    compare = lambda a, b: (a > b) - (a < b)
+
+
+def total_ordering_from_cmp(cls):
+    """
+    Decorate a class, building a total ordering out of a cmp method.
+
+    This is for python3 compatibility.
+    """
+    def __lt__(self, other):
+        return self.__cmp__(other) < 0
+    def __eq__(self, other):
+        return self.__cmp__(other) == 0
+
+    cls.__lt__ = __lt__
+    cls.__eq__ = __eq__
+    return total_ordering(cls)
 
 
 class FilePopenBase(object):
@@ -504,15 +527,20 @@ class PathSaver(object):
             return trypath
 
 
-def override_rich_cmp(localDict):
-    'create rich comparison methods that just use __cmp__'
-    mycmp = localDict['__cmp__']
-    localDict['__lt__'] = lambda self, other: mycmp(self, other) < 0
-    localDict['__le__'] = lambda self, other: mycmp(self, other) <= 0
-    localDict['__eq__'] = lambda self, other: mycmp(self, other) == 0
-    localDict['__ne__'] = lambda self, other: mycmp(self, other) != 0
-    localDict['__gt__'] = lambda self, other: mycmp(self, other) > 0
-    localDict['__ge__'] = lambda self, other: mycmp(self, other) >= 0
+def total_ordering_from_cmp(cls):
+    """
+    Decorate a class, building a total ordering out of a cmp method.
+
+    This is for python3 compatibility.
+    """
+    def __lt__(self, other):
+        return self.__cmp__(other) < 0
+    def __eq__(self, other):
+        return self.__cmp__(other) == 0
+
+    cls.__lt__ = __lt__
+    cls.__eq__ = __eq__
+    return total_ordering(cls)
 
 
 class DBAttributeDescr(object):

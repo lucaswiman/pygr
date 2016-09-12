@@ -4,14 +4,13 @@ from .mapping import *
 from .sequence import SequenceBase, DNA_SEQTYPE, RNA_SEQTYPE, PROTEIN_SEQTYPE
 import types
 from .classutil import methodFactory, standard_getstate,\
-     override_rich_cmp, generate_items, get_bound_subclass, standard_setstate,\
+     generate_items, get_bound_subclass, standard_setstate,\
      get_valid_path, standard_invert, RecentValueDictionary, read_only_error,\
-     SourceFileName, split_kwargs
+     SourceFileName, split_kwargs, compare, total_ordering_from_cmp
 import os
 import platform
 from collections import MutableMapping
 import warnings
-from . import logger
 
 
 class TupleDescriptor(object):
@@ -502,6 +501,7 @@ _schemaModuleDict = {'MySQLdb.cursors': mysql_table_schema,
                      'sqlite3': sqlite_table_schema}
 
 
+@total_ordering_from_cmp
 class SQLTableBase(MutableMapping):
     "Store information about an SQL table as dict keyed by primary key"
     _schemaModuleDict = _schemaModuleDict # default module list
@@ -590,7 +590,7 @@ class SQLTableBase(MutableMapping):
         if self is other:
             return 0
         else:
-            return cmp(id(self), id(other))
+            return compare(id(self), id(other))
     _pickleAttrs = dict(name=0, clusterKey=0, maxCache=0, arraysize=0,
                         attrAlias=0, serverInfo=0, autoGC=0, orderBy=0,
                         writeable=0, iterSQL=0, iterColumns=0, primaryKey=0)
@@ -1195,6 +1195,7 @@ class SQLEdges(SQLTableMultiNoCache):
         raise NotImplementedError
 
 
+@total_ordering_from_cmp
 class SQLEdgeDict(object):
     '2nd level graph interface to SQL database'
 
@@ -1399,6 +1400,7 @@ def getColumnTypes(createTable, attrAlias={}, defaultColumnType='int',
     return l
 
 
+@total_ordering_from_cmp
 class SQLGraph(SQLTableMultiNoCache):
     '''provide a graph interface via a SQL table.  Key capabilities are:
        - setitem with an empty dictionary: a dummy operation
@@ -1521,40 +1523,6 @@ class SQLGraph(SQLTableMultiNoCache):
         return self.cursor.fetchone()[0]
 
     __cmp__ = graph_cmp
-    override_rich_cmp(locals()) # MUST OVERRIDE __eq__ ETC. TO USE OUR __cmp__!
-
-##     def __cmp__(self, other):
-##         node = ()
-##         n = 0
-##         d = None
-##         it = iter(self.edges)
-##         while True:
-##             try:
-##                 source, target, edge = it.next()
-##             except StopIteration:
-##                 source = None
-##             if source != node:
-##                 if d is not None:
-##                     diff = cmp(n_target, len(d))
-##                     if diff != 0:
-##                         return diff
-##                 if source is None:
-##                     break
-##                 node = source
-##                 n += 1 # COUNT SOURCE NODES
-##                 n_target = 0
-##                 try:
-##                     d = other[node]
-##                 except KeyError:
-##                     return 1
-##             try:
-##                 diff = cmp(edge, d[target])
-##             except KeyError:
-##                 return 1
-##             if diff != 0:
-##                 return diff
-##             n_target += 1 # COUNT TARGET NODES FOR THIS SOURCE
-##         return cmp(n, len(other))
 
     add_standard_packing_methods(locals())  ############ PACK / UNPACK METHODS
 

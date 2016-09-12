@@ -23,10 +23,9 @@ def all_tests():
     "Returns all file names that end in _test.py"
     patt = re.compile("_test.py$")
     mods = os.listdir(os.path.normpath(os.path.dirname(__file__)))
-    mods = filter(patt.search, mods)
-
     # some predictable order...
-    mods.sort()
+    mods = sorted(filter(patt.search, mods))
+
     return mods
 
 

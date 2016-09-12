@@ -2,6 +2,21 @@ import sequence
 import nlmsa_utils
 import logger
 
+cdef inline bint richcmp_helper(int compare, int op):
+    """Returns True/False for each compare operation given an op code.
+    Compare should act similarly to Java's comparable interface"""
+    if op == 2: # ==
+        return compare == 0
+    elif op == 3: # !=
+        return compare != 0
+    elif op == 0: # <
+        return compare < 0
+    elif op == 1: # <=
+        return compare <= 0
+    elif op == 4: # >
+        return compare > 0
+    elif op == 5: # >=
+        return compare >= 0
 
 cdef class IntervalDBIterator:
 
@@ -1077,11 +1092,13 @@ alignment intervals to an NLMSA after calling its build() method.''')
     def __get__(self):
       return NLMSASliceLetters(self)
 
-  def __cmp__(self, other):
+  def __richcmp__(NLMSASlice self, NLMSASlice other not None, int op):
+    cdef int compare
     if isinstance(other, NLMSASlice):
-      return cmp(self.nlmsaSequence, other.nlmsaSequence)
+      compare = (self.nlmsaSequence > other.nlmsaSequence) - (self.nlmsaSequence < other.nlmsaSequence)
     else:
-      return -1
+      compare = -1
+    return richcmp_helper(compare, op)
 
   def rawIvals(self):
     'return list of raw numeric intervals in this slice'
@@ -1208,11 +1225,13 @@ cdef class NLMSANode:
 ##     else:
 ##       raise KeyError('seq not in node')
 
-  def __cmp__(self, other):
+  def __richcmp__(self, other, int op):
+    cdef int compare
     if isinstance(other, NLMSANode):
-      return cmp((self.nlmsaSlice, self.ipos), (other.nlmsaSlice, other.ipos))
+      compare = ((self.nlmsaSlice, self.ipos) > (other.nlmsaSlice, self.ipos)) - ((self.nlmsaSlice, self.ipos) < (other.nlmsaSlice, self.ipos))
     else:
-      return -1
+      compare = -1
+    return richcmp_helper(compare, op)
 
   ########################################## NODE-TO-NODE EDGE METHODS
   cdef int check_edge(self, int iseq, int ipos):

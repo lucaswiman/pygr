@@ -223,7 +223,7 @@ def %(name)s(self, dataGraph, dataMatch=None, queryMatch=None):
 
     def compile(self):
         'compile using Python exec statement'
-        exec str(self) in self._compiled # COMPILE OUR FUNCTION
+        exec(str(self), self._compiled) # COMPILE OUR FUNCTION
 
 
 def find_distutils_lib(path='build'):

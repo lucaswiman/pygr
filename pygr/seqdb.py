@@ -565,7 +565,7 @@ class _SeqLenDictSaver(object):
         self.reader = reader
 
     def __call__(self, d, ifile, filename):
-        offset = 0L
+        offset = 0
         pureseq_fp = open(filename + '.pureseq', 'wb')
         try:
             for o in self.reader(ifile, filename):
