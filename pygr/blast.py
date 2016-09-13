@@ -321,7 +321,7 @@ class BlastMapping(object):
 
     def get_seq_from_queryDB(self, queryDB):
         'get one sequence obj from queryDB'
-        seqID = iter(queryDB).next() # get 1st seq ID
+        seqID = next(iter(queryDB)) # get 1st seq ID
         return queryDB[seqID]
 
     def translation_kwargs(self, blastprog):

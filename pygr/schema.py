@@ -1,6 +1,7 @@
 from __future__ import absolute_import, print_function
 
 import types
+import six
 
 
 # STORES DICTIONARY OF ATTRIBUTE-BOUND GRAPHS
@@ -27,7 +28,7 @@ class SchemaDict(dict):
         "Add a schema rule to this SchemaDict"
         g = i[0]
         if len(i) >= 2:
-            if isinstance(i[1], types.StringType):
+            if isinstance(i[1], six.text_type):
                 if i[1] in self.attrs: # REMOVE OLD ENTRY
                     self -= self.attrs[i[1]]
                 self.attrs[i[1]] = i # SAVE IN INDEX ACCORDING TO ATTR NAME
@@ -47,7 +48,7 @@ class SchemaDict(dict):
         if len(self[g]) == 0: # REMOVE EMPTY LIST
             del self[g]
         if len(i) >= 2:
-            if isinstance(i[1], types.StringType):
+            if isinstance(i[1], six.text_type):
                 if i[1] not in self.attrs:
                     raise KeyError('attribute not found in SchemaDict!')
                 del self.attrs[i[1]] # REMOVE OLD ENTRY
@@ -103,13 +104,13 @@ def getschema(o, attr=None, graph=None):
     if hasattr(o, '__schema__'):
         for s in o.__schema__.getschema(attr, graph):
             found.append(s)
-            if isinstance(s[1], types.StringType):
+            if isinstance(s[1], six.text_type):
                 attrs[s[1]] = None
     if attr and len(found) > 0: # DON'T PROCEED
         return found
     if hasattr(o, '__class_schema__'):
         for s in o.__class_schema__.getschema(attr, graph):
-            if not isinstance(s[1], types.StringType) or s[1] not in attrs:
+            if not isinstance(s[1], six.text_type) or s[1] not in attrs:
                 found.append(s) # DON'T OVERWRITE OBJECT __schema__ BINDINGS
     return found
 

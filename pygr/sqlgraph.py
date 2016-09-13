@@ -1377,7 +1377,7 @@ def getColumnTypes(createTable, attrAlias={}, defaultColumnType='int',
         else: # INFER THE COLUMN TYPE FROM THE ASSOCIATED DATABASE KEYS...
             it = iter(db)
             try: # GET ONE IDENTIFIER FROM THE DATABASE
-                k = it.next()
+                k = next(it)
             except StopIteration:
                 # Table is empty, read the SQL type from db.
                 try:
@@ -1940,7 +1940,7 @@ def createTableFromRepr(rows, tableName, cursor, typeTranslation=None,
        names).
     """
     try:
-        row = rows.next() # GET 1ST ROW TO EXTRACT COLUMN INFO
+        row = next(rows) # GET 1ST ROW TO EXTRACT COLUMN INFO
     except StopIteration:
         return # IF rows EMPTY, NO NEED TO SAVE ANYTHING, SO JUST RETURN
     try:

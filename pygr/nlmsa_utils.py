@@ -4,6 +4,8 @@ import os
 import types
 from collections import MutableMapping
 
+import six
+
 from . import classutil
 from . import logger
 
@@ -162,7 +164,7 @@ class NLMSASeqDict(MutableMapping):
         if nsID < 0: # let the union figure it out
             self.nlmsa.currentUnion.__iadd__(seq)
             return # the union added it for us, no need to do anything
-        if isinstance(seq, types.StringType):
+        if isinstance(seq, six.text_type):
             id = seq # treat this as fully qualified identifier
         else: # get the identfier from the seq / database
             id = self.getSeqID(seq)
@@ -217,7 +219,7 @@ class NLMSASeqDict(MutableMapping):
     def __setitem__(self, k, ns):
         'save mapping of seq to the specified NLMSASequence'
         self.seqlist.append(ns)
-        if isinstance(k, types.StringType):
+        if isinstance(k, six.text_type):
             # Allow build with a string object.
             self._cache[k] = (ns.id, ns, 0)
         elif k is not None:
@@ -323,7 +325,7 @@ class BuildMSASlice(object):
     def __iadd__(self, targetIval):
         'save an alignment edge between self and targetIval'
         if self.is_lpo: # assign to correct LPO(s)
-            if isinstance(targetIval, types.SliceType):
+            if isinstance(targetIval, slice):
                 raise ValueError('you attempted to map LPO --> LPO?!?')
             self.ns.nlmsaLetters.__iadd__(targetIval)
             splitList = splitLPOintervals(self.ns.nlmsaLetters.lpoList,
@@ -338,7 +340,7 @@ class BuildMSASlice(object):
                     # Save target --> LPO
                     nsu[myslice] = (ns.id, src.start, src.stop)
         else:
-            if isinstance(targetIval, types.SliceType): # target is LPO
+            if isinstance(targetIval, slice): # target is LPO
                 splitList = splitLPOintervals(self.ns.nlmsaLetters.lpoList,
                                             targetIval, self.seq)
                 for ns, target, src in splitList:

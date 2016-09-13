@@ -158,7 +158,7 @@ class Build_Test(PygrBuildNLMSAMegabase):
         for lines in open(os.path.join(testInputDir,
                                        'refGene_exonAnnot%s_hg18.txt'
                                        % smallSamplePostfix),
-                          'r').xreadlines():
+                          'r'):
             row = [x for x in lines.split('\t')] # CONVERT TO LIST SO MUTABLE
             row[1] = int(row[1]) # CONVERT FROM STRING TO INTEGER
             exon_slices[row[1]] = row
@@ -191,7 +191,7 @@ class Build_Test(PygrBuildNLMSAMegabase):
         for lines in open(os.path.join(testInputDir,
                                        'refGene_spliceAnnot%s_hg18.txt'
                                        % smallSamplePostfix),
-                          'r').xreadlines():
+                          'r'):
             row = [x for x in lines.split('\t')] # CONVERT TO LIST SO MUTABLE
             row[1] = int(row[1]) # CONVERT FROM STRING TO INTEGER
             splice_slices[row[1]] = row
@@ -226,7 +226,7 @@ class Build_Test(PygrBuildNLMSAMegabase):
         for lines in open(os.path.join(testInputDir,
                                        'refGene_cdsAnnot%s_hg18.txt'
                                        % smallSamplePostfix),
-                          'r').xreadlines():
+                          'r'):
             row = [x for x in lines.split('\t')] # CONVERT TO LIST SO MUTABLE
             row[1] = int(row[1]) # CONVERT FROM STRING TO INTEGER
             cds_slices[row[1]] = row
@@ -259,7 +259,7 @@ class Build_Test(PygrBuildNLMSAMegabase):
         for lines in open(os.path.join(testInputDir,
                                        'phastConsElements28way%s_hg18.txt'
                                        % smallSamplePostfix),
-                          'r').xreadlines():
+                          'r'):
             row = [x for x in lines.split('\t')] # CONVERT TO LIST SO MUTABLE
             row[1] = int(row[1]) # CONVERT FROM STRING TO INTEGER
             ucsc_slices[row[1]] = row
@@ -301,7 +301,7 @@ class Build_Test(PygrBuildNLMSAMegabase):
                                 pairwiseMode=True, bidirectional=False)
         for lines in open(os.path.join(testInputDir, 'snp126%s_hg18.txt'
                                        % smallSamplePostfix),
-                          'r').xreadlines():
+                          'r'):
             row = [x for x in lines.split('\t')] # CONVERT TO LIST SO MUTABLE
             row[1] = int(row[1]) # CONVERT FROM STRING TO INTEGER
             snp_slices[row[1]] = row

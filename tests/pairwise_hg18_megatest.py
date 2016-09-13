@@ -143,7 +143,7 @@ class Build_Test(PygrBuildNLMSAMegabase):
         tmpOutputName = self.copyFile(outputName)
         tmpNewOutputName = os.path.join(self.path, newOutputName)
         outfile = open(tmpNewOutputName, 'w')
-        for lines in open(tmpInputName, 'r').xreadlines():
+        for lines in open(tmpInputName, 'r'):
             chrid, intstart, intend, nobs = string.split(lines.strip(), '\t')
             intstart, intend, nobs = int(intstart), int(intend), int(nobs)
             site1 = msa.seqDict['hg18' + '.' + chrid][intstart:intstart + 2]
@@ -215,7 +215,7 @@ class Build_Test(PygrBuildNLMSAMegabase):
         tmpOutputName = self.copyFile(outputName)
         tmpNewOutputName = os.path.join(self.path, newOutputName)
         outfile = open(tmpNewOutputName, 'w')
-        for lines in open(tmpInputName, 'r').xreadlines():
+        for lines in open(tmpInputName, 'r'):
             chrid, intstart, intend, nobs = string.split(lines.strip(), '\t')
             intstart, intend, nobs = int(intstart), int(intend), int(nobs)
             site1 = msa.seqDict['hg18' + '.' + chrid][intstart:intstart + 2]

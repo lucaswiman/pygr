@@ -338,7 +338,7 @@ class SeqPath(object):
                 k = slice(k, None, 1) # -1 IS LAST LETTER, SO [-1:None] slice
             else: # REGULAR CASE, JUST [k:k+1] slice
                 k = slice(k, k + 1, 1)
-        if isinstance(k, types.SliceType): # GET AN INTERVAL USING slice
+        if isinstance(k, slice): # GET AN INTERVAL USING slice
             return self.classySlice(self, k.start, k.stop, k.step)
         elif isinstance(k, SeqPath): # MODEL SEQ AS GRAPH
             if k.path is not self.path:

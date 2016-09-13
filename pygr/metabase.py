@@ -189,7 +189,7 @@ class PygrPickler(pickle.Pickler):
         try:
             # Check for unpicklable class (i.e. not loaded
             # via a module import).
-            if isinstance(obj, types.TypeType) and \
+            if isinstance(obj, type) and \
                obj.__module__ == '__main__':
                 raise WorldbaseNoModuleError(
 '''You cannot pickle a class from __main__!
@@ -198,7 +198,7 @@ import statement.''' % obj.__name__)
         except AttributeError:
             pass
         try:
-            if not isinstance(obj, types.TypeType) and obj is not self.root:
+            if not isinstance(obj, type) and obj is not self.root:
                 try:
                     return 'PYGR_ID:%s' % self.sourceIDs[id(obj)]
                 except KeyError:
@@ -433,7 +433,7 @@ class MySQLMetabase(object):
                 n = self.cursor.execute('select location from %s where \
                                         pygr_id=%%s' % self.tablename,
                                         ('PYGRLAYERNAME', ))
-            except StandardError:
+            except Exception:
                 print('''%s
 Database table %s appears to be missing or has no layer name!
 To create this table, call
@@ -1057,7 +1057,7 @@ class MetabaseList(MetabaseBase):
         'search our metabases for pickle string and docstr for resID'
         for mdb in self.mdb:
             try:
-                yield mdb.find_resource(resID, download).next()
+                yield next(mdb.find_resource(resID, download))
             except KeyError: # not in this db
                 pass
         raise WorldbaseNotFoundError('unable to find %s in WORLDBASEPATH'

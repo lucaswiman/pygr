@@ -1,5 +1,7 @@
 from __future__ import absolute_import, print_function
 
+import six
+
 from .schema import *
 from . import classutil
 
@@ -54,7 +56,7 @@ class Edge(list):
         try:
             return getattr(self.edgeInfo, attr)
         except AttributeError:
-            if isinstance(self.edgeInfo, types.DictType):
+            if isinstance(self.edgeInfo, dict):
                 # Treat edgeInfo as an attribute dictionary.
                 return self.edgeInfo[attr]
             raise AttributeError(attr)
@@ -155,7 +157,7 @@ class dictGraph(dict):
             if ruleSet == False:
                 ruleSet = getschema(node, graph=self)
             for rule in ruleSet:
-                if isinstance(rule[1], types.StringType):
+                if isinstance(rule[1], six.text_type):
                     # Attribute binding; bind directly to attribute.
                     setattr(node, rule[1], self[node])
         return self # THIS IS REQUIRED FROM iadd()!!
@@ -176,7 +178,7 @@ class dictGraph(dict):
         except KeyError:
             raise KeyError('Node not present in mapping.')
         for rule in getschema(node, graph=self):
-            if isinstance(rule[1], types.StringType): # ATTRIBUTE BINDING!
+            if isinstance(rule[1], six.text_type): # ATTRIBUTE BINDING!
                 delattr(node, rule[1])  # REMOVE ATTRIBUTE BINDING
 
     def __isub__(self, node):

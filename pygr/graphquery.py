@@ -775,7 +775,7 @@ class GraphQuery(object):
         n = len(self.q)
         self.q[0].restart() # PRELOAD ITERATOR FOR 1ST NODE
         while i >= 0:
-            dataNode = self.q[i].next()
+            dataNode = next(self.q[i])
             if dataNode is not None:
                 #print(i,qu[i].queryNode,dataNode)
                 if i + 1 < n: # MORE LEVELS TO QUERY?

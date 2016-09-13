@@ -17,13 +17,15 @@ Pygr XMLRPC server test. Recognized flags:
     the shelve used
 
 """
+from __future__ import print_function
+from __future__ import absolute_import
 import new
 import os
 import sys
 
-import pathfix
-import testoptions
-import testutil
+from . import pathfix
+from . import testoptions
+from . import testutil
 from pygr import logger
 from pygr import metabase
 
@@ -59,7 +61,7 @@ xmlrpc = metabase.ResourceServer(mdb, 'testy',
 # if needed, write out the port information to a file, so that the test runner
 # can retrieve it.
 if options.port_file:
-    print 'writing port information to %s' % options.port_file
+    print('writing port information to %s' % options.port_file)
     fp = open(options.port_file, 'w')
     fp.write("%d" % (xmlrpc.port))
     fp.close()
@@ -85,5 +87,5 @@ exit_handler = new.instancemethod(exit_now, xmlrpc.server,
 xmlrpc.server.register_function(exit_handler)
 
 # starts the server and never returns...
-print 'running server on %s:%s' % (xmlrpc.host, xmlrpc.port)
+print('running server on %s:%s' % (xmlrpc.host, xmlrpc.port))
 serve_forever(xmlrpc.server)

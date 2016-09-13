@@ -177,7 +177,7 @@ class AnnotationDB(MutableMapping):
             self.maxCache = maxCache
         if checkFirstID:
             try: # don't cache anything now; schema may change itemClass!
-                k = iter(self).next() # get the first ID if any
+                k = next(iter(self)) # get the first ID if any
                 self.get_annot_obj(k, self.sliceDB[k]) # valid annotation?
             except KeyError: # a convenient warning to the user...
                 raise KeyError('''\

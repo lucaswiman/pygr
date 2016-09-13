@@ -538,7 +538,7 @@ class Tblastn_Test(BlastBase):
                 if not isinstance(ival, (CoordsGroupStart, CoordsGroupEnd)):
                     assert (ival.src_start, ival.src_end,
                             ival.dest_start, ival.dest_end) \
-                        == it.next()
+                        == next(it)
         finally:
             fp.close()
 
@@ -660,7 +660,7 @@ class BlastParsers_Test(BlastBase):
             result = al[self.prot['HBB1_XENLA']]
         finally:
             tblastn_output.close()
-        src, dest, edge = iter(result.edges()).next()
+        src, dest, edge = next(iter(result.edges()))
 
         self.assertEqual(str(src),
             'LTAHDRQLINSTWGKLCAKTIGQEALGRLLWTYPWTQRYFSSFGNLNSADAVFHNEAVAAHGEK'

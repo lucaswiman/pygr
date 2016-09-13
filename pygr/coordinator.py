@@ -21,6 +21,8 @@ except ImportError:
     from xmlrpc import server
     SimpleXMLRPCServer = server.SimpleXMLRPCServer
 
+import six
+
 from . import dbfile
 
 
@@ -86,7 +88,7 @@ class XMLRPCClient(dict):
             # Get information about the requested object.
             methodDict = self.server.objectInfo(name)
             import types
-            if isinstance(methodDict, types.StringType):
+            if isinstance(methodDict, six.text_type):
                 raise KeyError(methodDict) # RETURNED VALUE IS ERROR MESSAGE!
             v = XMLRPCClientObject(self, name, methodDict)
             self[name] = v # SAVE THIS OBJECT INTO OUR DICTIONARY
@@ -1167,7 +1169,7 @@ class Processor(object):
         try: # TRAP ERRORS BOTH IN USER CODE AND coordinator CODE
             while 1:
                 try: # TRAP AND REPORT ALL ERRORS IN USER CODE
-                    id = it.next() # THIS RUNS USER CODE FOR ONE ITERATION
+                    id = next(it) # THIS RUNS USER CODE FOR ONE ITERATION
                     self.success_id = id  # MARK THIS AS A SUCCESS...
                     errors_in_a_row = 0
                     initializationError = False

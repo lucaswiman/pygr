@@ -3,6 +3,7 @@ Option parser for all tests
 
 Needs to be a separate module to avoid circular imports
 """
+from __future__ import print_function
 
 import optparse
 import sys

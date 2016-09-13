@@ -79,7 +79,7 @@ class UnkSequence(SeqPath):
             self.orientation = -self.orientation
 
     def __getitem__(self, k):
-        if isinstance(k, types.SliceType):
+        if isinstance(k, slice):
             (start, stop, step) = (k.start, k.stop, k.step)
             if k.step == None:
                 step = 1
