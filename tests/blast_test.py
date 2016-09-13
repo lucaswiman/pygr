@@ -530,7 +530,7 @@ class Tblastn_Test(BlastBase):
                          (96, 108, 99778, 99814),
                          (108, 181, 99826, 100045))
 
-        fp = file(testutil.datafile('bad_tblastn.txt'))
+        fp = open(testutil.datafile('bad_tblastn.txt'))
         try:
             p = parse_blast.BlastHitParser()
             it = iter(correctCoords)
@@ -600,7 +600,7 @@ class BlastParsers_Test(BlastBase):
                 results.append(al[seq])
             except KeyError:
                 pass
-        correctfile = file(testutil.datafile('multiblast_long_correct.txt'),
+        correctfile = open(testutil.datafile('multiblast_long_correct.txt'),
                            'r')
         try:
             correct = []

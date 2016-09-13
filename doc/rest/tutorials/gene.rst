@@ -144,7 +144,7 @@ a GFF3 file::
 
    def read_gff3(filename, genome):
       d = {} # for different types of sliceDBs
-      ifile = file(filename)
+      ifile = open(filename)
       for line in ifile: # parse all the GFF3 lines
          if line.startswith('#'): # ignore this line
             continue

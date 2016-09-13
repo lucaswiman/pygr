@@ -8,7 +8,6 @@ import .classutil
 import .logger
 
 
-
 class NLMSASeqList(list):
 
     def __init__(self, nlmsaSeqDict):
@@ -179,6 +178,12 @@ class NLMSASeqDict(MutableMapping):
     def getID(self, seq):
         'return nlmsa_id for a given seq'
         return self[seq][0]
+
+    def __delitem__(self, item):
+        raise NotImplementedError
+
+    def __len__(self):
+        raise NotImplementedError
 
     def __getitem__(self, seq):
         'return nlmsaID,NLMSASequence,offset for a given seq'
@@ -369,7 +374,7 @@ def read_seq_dict(pathstem, trypath=None):
     'read seqDict for NLMSA'
     if os.access(pathstem + '.seqDictP', os.R_OK):
         from pygr import worldbase
-        ifile = file(pathstem+'.seqDictP', 'rb') # pickle is binary file!
+        ifile = open(pathstem+'.seqDictP', 'rb') # pickle is binary file!
         try: # load from worldbase-aware pickle file
             seqDict = worldbase._mdb.loads(ifile.read())
         finally:
@@ -388,7 +393,7 @@ and no seqDict provided as an argument''' % (pathstem, pathstem))
 def save_seq_dict(pathstem, seqDict):
     'save seqDict to a worldbase-aware pickle file'
     from metabase import dumps
-    ofile = file(pathstem + '.seqDictP', 'wb') # pickle is binary file!
+    ofile = open(pathstem + '.seqDictP', 'wb') # pickle is binary file!
     try:
         ofile.write(dumps(seqDict))
     finally:

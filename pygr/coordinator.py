@@ -168,7 +168,7 @@ class FileDict(dict):
 
     def __init__(self, filename, objclass=str):
         dict.__init__(self)
-        f = file(filename, 'rU') # text file
+        f = open(filename, 'rU') # text file
         for line in f:
             key = line.split()[0] # GET THE 1ST ARGUMENT
             # Get the rest, strip the outer whitespace.
@@ -189,7 +189,7 @@ def detach_as_demon_process(self):
     os.setsid() # CREATE A NEW SESSION WITH NO CONTROLLING TERMINAL
     os.umask(0) # IS THIS ABSOLUTELY NECESSARY?
 
-    sys.stdout = file(self.errlog, 'a') # Daemon sends all output to log file.
+    sys.stdout = open(self.errlog, 'a') # Daemon sends all output to log file.
     sys.stderr = sys.stdout
     return 0
 
@@ -770,15 +770,15 @@ class Coordinator(object):
         self.clients_initializing = {}
         self.initialization_errors = {}
         try: # LOAD LIST OF IDs ALREADY SUCCESSFULLY PROCESSED, IF ANY
-            f = file(name + '.success', 'rU') # text file
+            f = open(name + '.success', 'rU') # text file
             for line in f:
                 self.already_done[line.strip()] = None
             f.close()
         except IOError: # OK IF NO SUCCESS FILE YET, WE'LL CREATE ONE.
             pass
         # Success file is to be cumulative but overwrite the error file.
-        self.successfile = file(name + '.success', 'a')
-        self.errorfile = file(name + '.error', 'w')
+        self.successfile = open(name + '.success', 'a')
+        self.errorfile = open(name + '.error', 'w')
         self.done = False
         self.hosts = DictAttrProxy(self.rc_server.get_hostinfo)
         self.register()
@@ -1130,7 +1130,7 @@ class Processor(object):
                 # trying again.
                 time.sleep(60)
             else: # GOT A REGULAR FILE, SO JUST OPEN IT
-                return file(rule, mode)
+                return open(rule, mode)
 
     def acquire_rule(self, resource):
         """lock the specified resource rule for this host

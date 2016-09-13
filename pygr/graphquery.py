@@ -389,7 +389,7 @@ def %(name)s(self, g, int maxhit=1000, cdict.IntTupleArray ita=None, qml=None):
                            'unable to copy source code to this directory.'))
         # Construct a unique name for the module.
         modulename = self.name + str(id(self))
-        myfile = file(modulename + '.pyx', 'w') # GENERATE PYREX CODE
+        myfile = open(modulename + '.pyx', 'w') # GENERATE PYREX CODE
         myfile.write(str(self)) # WRITE CODE
         myfile.close()
         exit_status = os.system('pyrexc %s.pyx' % (modulename))

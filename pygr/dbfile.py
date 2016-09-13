@@ -83,7 +83,7 @@ def open_bsddb(filename, flag='r', useHash=False, mode=0o666):
     except bsddb.db.DBAccessError: # HMM, BLOCKED BY PERMISSIONS
         if flag=='c' or flag=='w': # TRY OPENING READ-ONLY
             try:
-                ifile = file(filename)
+                ifile = open(filename)
             except IOError:
                 # Hmm, not even readable. Raise a generic permission error.
                 raise PermissionsError('insufficient permissions \

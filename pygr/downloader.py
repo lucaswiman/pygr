@@ -9,7 +9,7 @@ import logger
 def copy_to_file(f, ifile=None, newpath=None, blocksize=8192000):
     'copy from file obj f to ifile (or create newpath if given)'
     if newpath is not None:
-        ifile = file(newpath, 'wb') # binary file
+        ifile = open(newpath, 'wb') # binary file
     try:
         while True:
             s = f.read(blocksize)
@@ -51,7 +51,7 @@ def run_unzip(filepath, newpath=None, singleFile=False, **kwargs):
     if newpath is None:
         newpath = filepath[:-4] # DROP THE .zip SUFFIX
     if singleFile: # concatenate all files into newpath
-        ifile = file(newpath, 'wb') # copy as binary file
+        ifile = open(newpath, 'wb') # copy as binary file
         try:
             status = call_subprocess(['unzip', '-p', filepath], stdout=ifile)
         finally:
@@ -77,7 +77,7 @@ def create_file_with_path(basepath, filepath):
     import os.path
     newpath = os.path.join(basepath, filepath)
     create_dir_if_needed(os.path.dirname(newpath))
-    return file(newpath, 'wb') # copy as binary file
+    return open(newpath, 'wb') # copy as binary file
 
 
 def do_unzip(filepath, newpath=None, singleFile=False, **kwargs):
@@ -89,7 +89,7 @@ def do_unzip(filepath, newpath=None, singleFile=False, **kwargs):
     t = ZipFile(filepath, 'r')
     try:
         if singleFile: # extract to a single file
-            ifile = file(newpath, 'wb') # copy as binary file
+            ifile = open(newpath, 'wb') # copy as binary file
             try:
                 for name in t.namelist():
                     ifile.write(t.read(name)) # may run out of memory!!
@@ -113,7 +113,7 @@ def do_untar(filepath, mode='r|', newpath=None, singleFile=False, **kwargs):
     t = tarfile.open(filepath, mode)
     try:
         if singleFile: # extract to a single file
-            ifile = file(newpath, 'wb') # copy as binary file
+            ifile = open(newpath, 'wb') # copy as binary file
             try:
                 for name in t.getnames():
                     f = t.extractfile(name)

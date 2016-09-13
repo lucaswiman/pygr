@@ -128,7 +128,7 @@ def repeat_mask(seq, progname='RepeatMasker', opts=()):
     try:
         if p.wait():
             raise OSError('command %s failed' % ' '.join(p.args[0]))
-        ifile = file(p._stdin_path + '.masked', 'rU') # text file
+        ifile = open(p._stdin_path + '.masked', 'rU') # text file
         try:
             for id, title, seq_masked in read_fasta(ifile):
                 break # JUST READ ONE SEQUENCE
@@ -288,7 +288,7 @@ class BlastMapping(object):
         if ifile is not None: # JUST USE THE STREAM WE ALREADY HAVE OPEN
             return ifile, idFilter
         try: # DEFAULT: JUST READ THE FASTA FILE, IF IT EXISTS
-            return file(self.filepath, 'rU'), idFilter
+            return open(self.filepath, 'rU'), idFilter
         except IOError: # TRY READING FROM FORMATTED BLAST DATABASE
             cmd='fastacmd -D -d "%s"' % self.get_blast_index_path()
             return os.popen(cmd), NCBI_ID_PARSER #BLAST ADDS lcl| TO id

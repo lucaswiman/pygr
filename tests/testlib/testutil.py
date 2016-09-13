@@ -380,7 +380,7 @@ def remove_files(path, patterns=["*.seqlen"]):
 
 
 def get_file_md5(fpath):
-    ifile = file(fpath, 'rb')
+    ifile = open(fpath, 'rb')
     try:
         h = hashlib.md5(ifile.read())
     finally:

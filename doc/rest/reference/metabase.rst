@@ -860,7 +860,7 @@ as follows::
    class Foo(object):
      def __init__(self,filename):
        self.filename = SourceFileName(str(filename)) # MARK THIS A BEING A FILE NAME
-       ifile = file(self.filename) # OPEN THIS FILE NOW IF YOU WANT...
+       ifile = open(self.filename) # OPEN THIS FILE NOW IF YOU WANT...
 
 
   

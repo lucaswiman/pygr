@@ -470,7 +470,7 @@ class SequenceFileDB(SequenceDB):
             ifile=self._pureseq
         except AttributeError:
             fullpath = self.filepath + '.pureseq'
-            ifile = file(fullpath, 'rb')
+            ifile = open(fullpath, 'rb')
             self._pureseq = ifile
 
         # Now, read in the actual slice.
@@ -566,7 +566,7 @@ class _SeqLenDictSaver(object):
 
     def __call__(self, d, ifile, filename):
         offset = 0L
-        pureseq_fp = file(filename + '.pureseq', 'wb')
+        pureseq_fp = open(filename + '.pureseq', 'wb')
         try:
             for o in self.reader(ifile, filename):
                 # store the length & offset in the seqLenDict
@@ -597,7 +597,7 @@ def _store_seqlen_dict(d, filename, reader=None, mode='rU'):
     if reader is not None:
         builder = _SeqLenDictSaver(reader)
 
-    ifile = file(filename, mode)
+    ifile = open(filename, mode)
     try:
         builder(d, ifile, filename) # run the builder on our sequence set
     finally:
@@ -734,7 +734,7 @@ cannot create with prefixDict and filename both!''')
 
             if trypath is None:
                 trypath = [os.path.dirname(filename)]
-            ifile = file(filename, 'rU')
+            ifile = open(filename, 'rU')
             try:
                 it = iter(ifile)
                 # Remove leading/trailing CR+LF.
@@ -860,7 +860,7 @@ cannot create with prefixDict and filename both!''')
 
     def writeHeaderFile(self, filename):  # @CTB not used; necessary?
         """Save a header file, suitable for later re-creation."""
-        ifile = file(filename, 'w')
+        ifile = open(filename, 'w')
         print(self.separator, file=ifile)
         for k, v in self.prefixDict.items():
             try:

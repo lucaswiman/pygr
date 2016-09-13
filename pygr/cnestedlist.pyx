@@ -1560,9 +1560,9 @@ cdef class NLMSA:
     'open all nestedlist indexes in this LPO database for immediate use'
     cdef NLMSASequence ns
     try:
-      ifile = file(self.pathstem + '.NLMSAindex', 'rU') # text file
+      ifile = open(self.pathstem + '.NLMSAindex', 'rU') # text file
     except IOError:
-      ifile = file(self.pathstem + 'NLMSAindex', 'rU') # FOR BACKWARDS COMPATIBILITY
+      ifile = open(self.pathstem + 'NLMSAindex', 'rU') # FOR BACKWARDS COMPATIBILITY
     try:
       for line in ifile:
         id, name, is_union, length = line.strip().split('\t')
@@ -1590,7 +1590,7 @@ cdef class NLMSA:
     'read pickled attribute dictionary from file and apply to self'
     import pickle
     try:
-      ifile = file(self.pathstem + '.attrDict', 'rb') # pickle is binary file!
+      ifile = open(self.pathstem + '.attrDict', 'rb') # pickle is binary file!
     except IOError: # BACKWARDS COMPATIBILITY: OLD NLMSA HAS NOT ATTRDICT
       return
     try:
@@ -1993,7 +1993,7 @@ Check the input!''' % (pythonStr, seqInfo.length))
     cdef NLMSASequence ns
     self.seqs.reopenReadOnly() # SAVE INDEXES AND OPEN READ-ONLY
     ntotal = 0
-    ifile=file(self.pathstem + '.NLMSAindex', 'w') # text file
+    ifile=open(self.pathstem + '.NLMSAindex', 'w') # text file
     try:
       for ns in self.seqlist: # BUILD EACH IntervalFileDB ONE BY ONE
         ntotal = ntotal + ns.buildFiles(**kwargs)
@@ -2009,7 +2009,7 @@ Check the input!''' % (pythonStr, seqInfo.length))
       raise nlmsa_utils.EmptyAlignmentError('empty alignment!')
     import pickle
     import sys
-    ifile = file(self.pathstem + '.attrDict', 'wb') # pickle is binary file!
+    ifile = open(self.pathstem + '.attrDict', 'wb') # pickle is binary file!
     try:
       pickle.dump(dict(is_bidirectional=self.is_bidirectional,
                        pairwiseMode=self.pairwiseMode), ifile)
@@ -2094,7 +2094,7 @@ to another machine.  Therefore, when loading this textfile
 on the destination machine, you will have to provide the
 seqDict argument to textfile_to_binaries() on the destination machine.''')
   try:
-    ifile = file(pathstem + '.attrDict', 'rb') # pickle is binary file!
+    ifile = open(pathstem + '.attrDict', 'rb') # pickle is binary file!
     d = pickle.load(ifile)
     ifile.close()
   except IOError:
@@ -2138,9 +2138,9 @@ to textfile_to_binaries() on the destination machine.''')
                  nlmsaID, nsID, offset) < 0:
         raise IOError('error writing to file %s' %outfilename)
     try:
-      ifile = file(pathstem + '.NLMSAindex', 'rU') # text file
+      ifile = open(pathstem + '.NLMSAindex', 'rU') # text file
     except IOError:
-      ifile = file(pathstem + 'NLMSAindex', 'rU')
+      ifile = open(pathstem + 'NLMSAindex', 'rU')
   except:
     fclose(outfile)
     raise
@@ -2207,7 +2207,7 @@ def textfile_to_binaries(filename, seqDict=None, prefixDict=None, buildpath=''):
       d['is_bidirectional'] = is_bidirectional
     if pairwiseMode != -1:
       d['pairwiseMode'] = pairwiseMode
-    ifile = file(basestem + '.attrDict', "wb") # pickle is binary file!
+    ifile = open(basestem + '.attrDict', "wb") # pickle is binary file!
     try:
       pickle.dump(d, ifile)
     finally:
@@ -2271,7 +2271,7 @@ dictionary argument: %s''' % missing)
       logger.info('Saving NLMSA binary index: ' + s[14:] + '...')
       if text_file_to_binaries(infile, basestem, err_msg) < 0:
         raise IOError(err_msg)
-    ifile = file(buildpath1 + '.NLMSAindex', "w") # text file
+    ifile = open(buildpath1 + '.NLMSAindex', "w") # text file
     ifile.write(NLMSAindexText) # LAST, WRITE TOP INDEX FILE
     ifile.close()
   finally:
