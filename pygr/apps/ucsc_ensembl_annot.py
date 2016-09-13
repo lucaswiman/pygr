@@ -1,6 +1,6 @@
 from __future__ import absolute_import, print_function
 
-import UserDict
+from collections import MutableMapping
 
 from pygr import annotation, seqdb, sequence, sqlgraph, worldbase
 from pygr.classutil import read_only_error
@@ -282,7 +282,7 @@ class EnsemblProteinRow(sqlgraph.TupleO):
         return str(self.id)
 
 
-class EnsemblExonOnDemandSliceDB(object, UserDict.DictMixin):
+class EnsemblExonOnDemandSliceDB(MutableMapping):
     '''Obtains exon info on demand by looking up associated transcript '''
 
     def __init__(self, gRes):

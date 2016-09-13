@@ -1,6 +1,6 @@
 from __future__ import absolute_import, print_function
 
-import UserDict
+from collections import MutableMapping
 import weakref
 
 from .sequence import *
@@ -140,7 +140,7 @@ class TranslationAnnotSlice(AnnotationSlice):
     frame = TranslationAnnotFrameDescr()
 
 
-class AnnotationDB(object, UserDict.DictMixin):
+class AnnotationDB(MutableMapping):
     'container of annotations as specific slices of db sequences'
 
     def __init__(self, sliceDB, seqDB, annotationType=None,

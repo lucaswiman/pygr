@@ -59,7 +59,7 @@ SQLTableBase
 ------------
 The base class for :class:`SQLTable` and other variants below.
 This class is derived from
-the Python :class:`UserDict.DictMixin` class, so all standard methods of 
+the Python :class:`MutableMapping` class, so all standard methods of 
 the Mapping protocol (i.e. dictionary) can be used.
 
 SQLTable

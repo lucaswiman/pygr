@@ -145,7 +145,7 @@ improve documentation.
   Use this instead of :class:`BlastDB`.
 
 * :class:`seqdb.SequenceDB` now provides a complete and consistent dict-like
-  interface, using UserDict.DictMixin.
+  interface, using MutableMapping.
 
 * :class:`seqdb.SequenceDB` caching has been improved in several ways.  First,
   by default, it uses a :class:`classutil.RecentValueDictionary` as its object cache.
@@ -192,7 +192,7 @@ We created a new :mod:`annotation` module and moved existing
 
 * :class:`annotation.AnnotationDB`
   now provides a complete and consistent dict-like
-  interface, using UserDict.DictMixin.
+  interface, using MutableMapping.
 
 * :class:`annotation.AnnotationDB` can now be served via XMLRPC.
 
@@ -303,7 +303,7 @@ sqlgraph
   of the code.
 
 * :class:`sqlgraph.SQLTable` now provides a complete and consistent dict-like
-  interface, using UserDict.DictMixin.
+  interface, using MutableMapping.
 
 * added optional *orderBy* argument to :class:`sqlgraph.SQLTable` constructor.
   Allows you to control the iteration order of the database objects.

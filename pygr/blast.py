@@ -1,17 +1,18 @@
+from collections import MutableMapping
 import glob
 import os
 import tempfile
-import classutil
-import logger
+
+from . import classutil
+from . import logger
 from .sequtil import *
 from .parse_blast import BlastHitParser
 from .seqdb import write_fasta, read_fasta
 from .nlmsa_utils import CoordsGroupStart, CoordsGroupEnd, CoordsToIntervals,\
      EmptySlice
-from annotation import AnnotationDB, TranslationAnnot, TranslationAnnotSlice
+from .annotation import AnnotationDB, TranslationAnnot, TranslationAnnotSlice
 from . import cnestedlist
 from . import translationDB
-import UserDict
 
 # NCBI HAS THE NASTY HABIT OF TREATING THE IDENTIFIER AS A BLOB INTO
 # WHICH THEY STUFF FIELD AFTER FIELD... E.G. gi|1234567|foobarU|NT_1234567|...
@@ -503,7 +504,7 @@ class BlastIDIndex(object):
             return False
 
 
-class BlastIDInfoDict(object, UserDict.DictMixin):
+class BlastIDInfoDict(MutableMapping):
     """provide seqInfoDict interface for BlastIDIndex """
 
     def __init__(self, db):

@@ -9,7 +9,7 @@ from .classutil import methodFactory, standard_getstate,\
      SourceFileName, split_kwargs
 import os
 import platform
-import UserDict
+from collections import MutableMapping
 import warnings
 from . import logger
 
@@ -502,7 +502,7 @@ _schemaModuleDict = {'MySQLdb.cursors': mysql_table_schema,
                      'sqlite3': sqlite_table_schema}
 
 
-class SQLTableBase(object, UserDict.DictMixin):
+class SQLTableBase(MutableMapping):
     "Store information about an SQL table as dict keyed by primary key"
     _schemaModuleDict = _schemaModuleDict # default module list
     get_table_schema = get_table_schema
@@ -1825,7 +1825,7 @@ Adds or deletes edges by setting foreign key values in the table'''
         dict.__delitem__(self, dest) # REMOVE FROM CACHE
 
 
-class ForeignKeyGraph(object, UserDict.DictMixin):
+class ForeignKeyGraph(MutableMapping):
     '''graph interface to a foreign key in an SQL table
 Caches dict of target nodes in itself; provides dict interface.
     '''
@@ -2219,7 +2219,7 @@ _DBServerModuleDict = dict(MySQLdb=MySQLServerInfo,
                            sqlite3=SQLiteServerInfo)
 
 
-class MapView(object, UserDict.DictMixin):
+class MapView(MutableMapping):
     'general purpose 1:1 mapping defined by any SQL query'
 
     def __init__(self, sourceDB, targetDB, viewSQL, cursor=None,
@@ -2289,7 +2289,7 @@ class MapView(object, UserDict.DictMixin):
             return self._inverse
 
 
-class GraphViewEdgeDict(UserDict.DictMixin):
+class GraphViewEdgeDict(MutableMapping):
     'edge dictionary for GraphView: just pre-loaded on init'
 
     def __init__(self, g, k):

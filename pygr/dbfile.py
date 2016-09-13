@@ -1,9 +1,12 @@
+from __future__ import absolute_import, print_function
 
-import anydbm
+from collections import MutableMapping
 import shelve
 import sys
-import UserDict
-import logger
+
+import anydbm
+
+from . import logger
 
 
 class WrongFormatError(IOError):
@@ -118,7 +121,7 @@ def iter_gdbm(db):
         k = db.nextkey(k)
 
 
-class _ClosedDict(UserDict.DictMixin):
+class _ClosedDict(MutableMapping):
     """This dummy class exists solely to raise a clear error msg if accessed.
     Copied from the Python 2.6 shelve.py """
 

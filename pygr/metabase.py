@@ -5,7 +5,8 @@ import os
 import pickle
 import re
 import sys
-import UserDict
+from collections import MutableMapping
+
 from StringIO import StringIO
 from .mapping import Collection, Mapping, Graph
 from .classutil import open_shelve, standard_invert, get_bound_subclass, \
@@ -986,7 +987,7 @@ class Metabase(MetabaseBase):
                             download=download)
 
 
-class ZoneDict(UserDict.DictMixin):
+class ZoneDict(MutableMapping):
     'interface to current zones'
 
     def __init__(self, mdbList):

@@ -1,10 +1,12 @@
 from __future__ import absolute_import, print_function
 
-from seqdb import SequenceDB, BasicSeqInfoDict
-from annotation import AnnotationDB, TranslationAnnot, TranslationAnnotSlice
-import classutil
-import sequence
-import UserDict
+from collections import MutableMapping
+
+from .seqdb import SequenceDB, BasicSeqInfoDict
+from .annotation import AnnotationDB, TranslationAnnot, TranslationAnnotSlice
+from . import classutil
+from . import sequence
+
 
 
 class SeqTranslator(sequence.SequenceBase):
@@ -97,7 +99,7 @@ class TranslationDB(SequenceDB):
         SequenceDB.__init__(self, **kwargs)
 
 
-class SixFrameInfo(object, UserDict.DictMixin):
+class SixFrameInfo(MutableMapping):
     """Dictionary of slice info for all six frames of each seq in seqDB. """
 
     def __init__(self, seqDB):

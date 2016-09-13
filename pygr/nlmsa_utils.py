@@ -1,8 +1,12 @@
+from __future__ import absolute_import, print_function
+
 import os
 import types
-import classutil
-import logger
-from UserDict import DictMixin
+from collections import MutableMapping
+
+import .classutil
+import .logger
+
 
 
 class NLMSASeqList(list):
@@ -127,7 +131,7 @@ class _NLMSASeqDict_ValueWrapper(object):
         return self.v[n]
 
 _DEFAULT_SEQUENCE_CACHE_SIZE=100
-class NLMSASeqDict(object, DictMixin):
+class NLMSASeqDict(MutableMapping):
     """Index sequences by pathForward, and use list to keep reverse mapping.
 
     Keeps a cache of n most recently accessed sequences, up to

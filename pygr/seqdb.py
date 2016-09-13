@@ -143,8 +143,8 @@ from __future__ import absolute_import, print_function
 
 import sys
 import os
-import UserDict
 import weakref
+from collections import MutableMapping
 
 from .sequence import *                  # @CTB
 from .sqlgraph import *                  # @CTB
@@ -178,7 +178,7 @@ class _SequenceDBInverse(object):
             return False
 
 
-class SequenceDB(object, UserDict.DictMixin):
+class SequenceDB(MutableMapping):
     """Base class for sequence databases.
 
     SequenceDB provides a few basic (base) behaviors:
@@ -499,7 +499,7 @@ class _SeqLenObject(BasicSeqInfo):
         BasicSeqInfo.__init__(self, seqID, seqDB, length)
 
 
-class BasicSeqInfoDict(object, UserDict.DictMixin):
+class BasicSeqInfoDict(MutableMapping):
     """Wrapper around SequenceDB.seqLenDict to provide seqInfoDict behavior.
     This basic version just gets the length from the sequence object itself.
     """
@@ -633,7 +633,7 @@ You can get that using its \'sequence\' attribute.''')
             return False
 
 
-class _PrefixUnionMemberDict(object, UserDict.DictMixin):
+class _PrefixUnionMemberDict(MutableMapping):
     """
     @CTB confusing/inappropriate use of a dict interface! keep??
     @CTB document.
@@ -674,7 +674,7 @@ class _PrefixUnionMemberDict(object, UserDict.DictMixin):
         return self.values[db]
 
 
-class PrefixUnionDict(object, UserDict.DictMixin):
+class PrefixUnionDict(MutableMapping):
     """Interface to a set of sequence DBs, each assigned a unique prefix.
 
     For example, the sequence ID 'foo.bar' would unpack to ID 'bar' in
@@ -987,7 +987,7 @@ cannot automatically construct PrefixUnionDict''')
         self.dicts[d] = name
 
 
-class _PUDSeqInfoDict(object, UserDict.DictMixin):
+class _PUDSeqInfoDict(MutableMapping):
     """A wrapper object supplying a standard seqInfoDict interface for PUDs.
 
     This class simply provides a standard dict interface that rewrites
