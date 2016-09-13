@@ -13,6 +13,8 @@
 # All configuration values have a default value; values that are commented out
 # serve to show the default value.
 
+from __future__ import absolute_import, print_function
+
 import os
 import sys
 

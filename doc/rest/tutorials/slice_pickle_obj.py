@@ -1,3 +1,5 @@
+from __future__ import absolute_import, print_function
+
 class MySliceInfo(object):
 
     def __init__(self, id, start, stop, orientation):

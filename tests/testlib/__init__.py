@@ -1,3 +1,5 @@
+from __future__ import absolute_import, print_function
+
 __all__ = ['logger', 'testoptions', 'testutil']
 
 # fix import paths first so that the right (dev) version of pygr is imported

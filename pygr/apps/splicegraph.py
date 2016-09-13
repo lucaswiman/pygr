@@ -1,3 +1,5 @@
+from __future__ import absolute_import, print_function
+
 from pygr.sqlgraph import *
 from pygr.sequence import *
 from pygr.seqdb import *

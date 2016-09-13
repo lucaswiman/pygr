@@ -1,3 +1,5 @@
+from __future__ import absolute_import, print_function
+
 from seqdb import SequenceDB, BasicSeqInfoDict
 from annotation import AnnotationDB, TranslationAnnot, TranslationAnnotSlice
 import classutil

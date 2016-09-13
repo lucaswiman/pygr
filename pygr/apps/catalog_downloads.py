@@ -1,4 +1,4 @@
-
+from __future__ import absolute_import, print_function
 
 def catalog_downloads(url, fileFilter, fileNamer, fileDocumenter, klass):
     '''returns dict of resources for downloading target data:

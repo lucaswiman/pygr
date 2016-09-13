@@ -1,4 +1,5 @@
-from __future__ import generators
+from __future__ import absolute_import, print_function
+
 from sequence import *
 import classutil
 import UserDict

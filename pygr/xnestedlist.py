@@ -1,3 +1,5 @@
+from __future__ import absolute_import, print_function
+
 import cnestedlist
 from nlmsa_utils import EmptySliceError, EmptySlice
 import sequence

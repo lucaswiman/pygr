@@ -1,3 +1,4 @@
+from __future__ import absolute_import, print_function
 import sys
 __version__ = "0.8.2"
 

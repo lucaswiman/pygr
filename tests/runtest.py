@@ -4,6 +4,7 @@ Test runner for main pygr tests.
 
 Collects all files ending in _test.py and executes them.
 """
+from __future__ import absolute_import, print_function
 
 import os
 import re

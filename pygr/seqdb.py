@@ -139,7 +139,8 @@ Some long term issues:
 
 """
 
-from __future__ import generators
+from __future__ import absolute_import, print_function, unicode_literals
+
 import sys
 import os
 import UserDict

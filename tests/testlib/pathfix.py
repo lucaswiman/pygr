@@ -10,6 +10,8 @@ NOTE in place builds are required:
 python setup.py build_ext -i
 """
 
+from __future__ import absolute_import, print_function
+
 import distutils.util
 import platform
 import os

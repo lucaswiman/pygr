@@ -1,3 +1,4 @@
+from __future__ import absolute_import, print_function
 
 import warnings
 warnings.warn('pygr.Data is deprecated.  Use "from pygr import worldbase" \

@@ -1,6 +1,5 @@
+from __future__ import absolute_import, print_function, unicode_literals
 
-
-from __future__ import generators
 from mapping import *
 from sequence import SequenceBase, DNA_SEQTYPE, RNA_SEQTYPE, PROTEIN_SEQTYPE
 import types

@@ -1,4 +1,5 @@
-from __future__ import generators
+from __future__ import absolute_import, print_function
+
 import math
 from nlmsa_utils import CoordsGroupStart, CoordsGroupEnd
 
