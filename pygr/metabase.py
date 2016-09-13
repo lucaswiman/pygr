@@ -7,7 +7,7 @@ import re
 import sys
 from collections import MutableMapping
 
-from StringIO import StringIO
+from io import StringIO
 from .mapping import Collection, Mapping, Graph
 from .classutil import open_shelve, standard_invert, get_bound_subclass, \
      SourceFileName

@@ -68,7 +68,7 @@ except ImportError:
         bsddb = None
 
 
-def open_bsddb(filename, flag='r', useHash=False, mode=0666):
+def open_bsddb(filename, flag='r', useHash=False, mode=0o666):
     """open bsddb index instead of hash by default.
     useHash=True forces it to use anydbm default (i.e. hash) instead.
     Also gives more meaningful error messages."""
@@ -104,7 +104,7 @@ to open file: ' + filename)
 shelve format: ' + filename)
 
 
-def open_index(filename, flag='r', useHash=False, mode=0666):
+def open_index(filename, flag='r', useHash=False, mode=0o666):
     if bsddb is None:
         d = open_anydbm(filename, flag)
         if not useHash:
@@ -164,7 +164,7 @@ Original error message was: %s''' % str(exc_value))
 
 
 def shelve_open(filename, flag='c', protocol=None, writeback=False,
-                useHash=False, mode=0666, *args, **kwargs):
+                useHash=False, mode=0o666, *args, **kwargs):
     """improved implementation of shelve.open() that won't generate
 bogus __del__ warning messages like Python's version does."""
     d = open_index(filename, flag, useHash, mode) # construct Shelf only if OK

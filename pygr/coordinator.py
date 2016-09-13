@@ -1092,8 +1092,8 @@ class Processor(object):
 
     def report_error(self, id):
         "report an error using traceback.print_exc()"
-        import StringIO
-        err_report = StringIO.StringIO()
+        from io import StringIO
+        err_report = StringIO()
         traceback.print_exc(self.max_tb, sys.stderr) #REPORT TB TO OUR LOG
         traceback.print_exc(self.max_tb, err_report) #REPORT TB TO SERVER
         self.server.report_error(self.host, self.pid, id,
