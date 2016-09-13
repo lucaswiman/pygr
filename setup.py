@@ -13,11 +13,7 @@ multi-genome alignment data.
 import os
 import sys
 
-try:
-    from setuptools import setup, Extension
-except ImportError:
-    print 'Setuptools not imported, falling back to distutils'
-    from distutils.core import setup, Extension
+from setuptools import setup, Extension
 
 import pygr
 
@@ -50,26 +46,13 @@ Topic :: Scientific/Engineering :: Bio-Informatics
 CLASSIFIERS = filter(None, CLASSIFIERS.splitlines())
 
 # Setuptools should handle all this automatically
-if 'setuptools' in sys.modules:
-    try:
-        import pkg_resources
-        pkg_resources.require('Pyrex>=0.9.8')
-        ext = 'pyx'
-    except pkg_resources.DistributionNotFound:
-        ext = 'c'
-    cmdclass = {}
-else:
-# if pyrex is not present try compiling the C files
-    try:
-        from Pyrex.Compiler.Version import version as PYREX_VERSION
-        from Pyrex.Distutils import build_ext
-        if PYREX_VERSION < "0.9.8":
-            error("pyrex version >=0.9.8 required, found %s" % PYREX_VERSION)
-        ext = 'pyx'
-        cmdclass = {'build_ext': build_ext}
-    except ImportError, exc:
-        ext = 'c'
-        cmdclass = {}
+try:
+    import pkg_resources
+    pkg_resources.require('cython')
+    ext = 'pyx'
+except pkg_resources.DistributionNotFound:
+    ext = 'c'
+cmdclass = {}
 
 # extension sources
 seqfmt_src = [os.path.join('pygr', 'seqfmt.%s' % ext)]
