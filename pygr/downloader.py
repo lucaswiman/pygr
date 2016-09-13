@@ -226,7 +226,7 @@ class SourceURL(object):
 def generic_build_unpickler(cname, args, kwargs):
     'does nothing but construct the specified klass with the specified args'
     if cname == 'BlastDB':
-        from seqdb import BlastDB as klass
+        from .seqdb import BlastDB as klass
     else:
         raise ValueError('''class name not registered for unpickling security.
 Add it to pygr.downloader.generic_build_unpickler if needed: ''' + cname)

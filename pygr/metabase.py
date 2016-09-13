@@ -997,6 +997,18 @@ class ZoneDict(MutableMapping):
         self.mdbList.update(keepCurrentPath=True) # make sure metabases loaded
         return self.mdbList.zoneDict[zoneName]
 
+    def __iter__(self):
+        return iter(self.mdbList.zoneDict)
+
+    def __len__(self):
+        return len(self.mdbList.zoneDict)
+
+    def __delitem__(self, item):
+        raise NotImplementedError
+
+    def __setitem__(self, item, value):
+        raise NotImplementedError
+
     def keys(self):
         self.mdbList.update(keepCurrentPath=True) # make sure metabases loaded
         return self.mdbList.zoneDict.keys()
@@ -1096,7 +1108,7 @@ class MetabaseList(MetabaseBase):
                     else: # warn the user but keep going...
                         import traceback
                         traceback.print_exc(10, sys.stderr)
-                        print(sys.stderr, '''
+                        print('''
 WARNING: error accessing metabase %s.  Continuing...''' % dbpath, file=sys.stderr)
                 else: # NO PROBLEM, SO ADD TO OUR RESOURCE DB LIST
                     # Save to our list of resource databases.

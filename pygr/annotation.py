@@ -209,6 +209,9 @@ cannot create annotation object %s; sequence database %s may not be correct'''
                        any additional info desired), and will be saved directly
                        to the sliceDB.''')
 
+    def __delitem__(self, item):
+        raise NotImplementedError
+
     def getSliceAttr(self, sliceInfo, attr):
         try:
             k = self.sliceAttrDict[attr] # USE ALIAS IF PROVIDED

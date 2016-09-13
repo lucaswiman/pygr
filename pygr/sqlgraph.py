@@ -1139,6 +1139,9 @@ class SQLTableMultiNoCache(SQLTableBase):
     def addAttrAlias(self, **kwargs):
         self.data.update(kwargs) # ALIAS KEYS TO EXPRESSION VALUES
 
+    def __setitem__(self, item, value):
+        raise NotImplementedError
+
 
 class SQLEdges(SQLTableMultiNoCache):
     '''provide iterator over edges as (source, target, edge)
@@ -1181,6 +1184,15 @@ class SQLEdges(SQLTableMultiNoCache):
             l.append((self.graph.unpack_source(source_id),
                       self.graph.unpack_target(target_id)))
         return l
+
+    def __len__(self):
+        return len(self.keys())
+
+    def __delitem__(self, item):
+        raise NotImplementedError
+
+    def __setitem__(self, item, value):
+        raise NotImplementedError
 
 
 class SQLEdgeDict(object):
@@ -2262,6 +2274,9 @@ class MapView(MutableMapping):
     __setstate__ = standard_setstate
     __setitem__ = __delitem__ = clear = pop = popitem = update = \
                   setdefault = read_only_error
+
+    def __len__(self):
+        return len(self.keys())
 
     def __iter__(self):
         'only yield sourceDB items that are actually in this mapping!'

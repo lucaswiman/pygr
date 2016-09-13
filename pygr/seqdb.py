@@ -311,6 +311,12 @@ class SequenceDB(MutableMapping):
     def __len__(self):
         return len(self.seqInfoDict)
 
+    def __delitem__(self, item):
+        raise NotImplementedError
+
+    def __setitem__(self, item, value):
+        raise NotImplementedError
+
     def __getitem__(self, seqID):
         """Retrieve sequence by id, using cache if available."""
         try: # for speed, default case (cache hit) should return immediately
@@ -520,6 +526,12 @@ class BasicSeqInfoDict(MutableMapping):
     def keys(self):
         return self.seqDB.seqLenDict.keys()
 
+    def __delitem__(self, item):
+        raise NotImplementedError
+
+    def __setitem__(self, item, value):
+        raise NotImplementedError
+
 
 class _SeqLenDictWrapper(BasicSeqInfoDict):
     """
@@ -672,6 +684,15 @@ class _PrefixUnionMemberDict(MutableMapping):
                 raise KeyError('key not a member of this union!')
 
         return self.values[db]
+
+    def __delitem__(self, k):
+        raise NotImplementedError
+
+    def __len__(self):
+        return len(self.keys())
+
+    def __iter__(self):
+        return iter(self.keys())
 
 
 class PrefixUnionDict(MutableMapping):
@@ -878,6 +899,12 @@ but not to a text HeaderFile!''' % k)
     # these methods should not be implemented for read-only database.
     clear = pop = popitem = classutil.read_only_error
 
+    def __delitem__(self, item):
+        raise NotImplementedError
+
+    def __setitem__(self, item, value):
+        raise NotImplementedError
+
 
 class _PrefixDictInverseAdder(_PrefixUnionDictInverse):
     """Inverse class for SeqPrefixUnionDict; adds sequences when looked up.
@@ -1025,6 +1052,16 @@ class _PUDSeqInfoDict(MutableMapping):
 
     def has_key(self, k):
         return k in self.seqDB
+
+    def __setitem__(self, item, value):
+        raise NotImplementedError
+
+    def __len__(self):
+        return len(self.keys())
+
+    def __delitem__(self, item):
+        raise NotImplementedError
+
 
 #
 # @CTB stopped review here. ###################################################

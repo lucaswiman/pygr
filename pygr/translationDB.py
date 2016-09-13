@@ -126,6 +126,12 @@ class SixFrameInfo(MutableMapping):
             for frame in (':0', ':1', ':2', ':-0', ':-1', ':-2'):
                 yield seqID + frame
 
+    def __setitem__(self, item, value):
+        raise NotImplementedError
+
+    def __delitem__(self, item):
+        raise NotImplementedError
+
     def keys(self):
         return list(self)
 
