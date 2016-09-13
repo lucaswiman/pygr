@@ -30,7 +30,7 @@ def open_anydbm(*args, **kwargs):
     'trap anydbm.error message and transform to our consistent exception types'
     try:
         return anydbm.open(*args, **kwargs)
-    except ImportError, e:
+    except ImportError as e:
         if str(e).endswith('bsddb') and bsddb:
             # This almost certainly means dbhash tried to import bsddb
             # on a system with only bsddb3 working correctly. In that case,
@@ -38,7 +38,7 @@ def open_anydbm(*args, **kwargs):
             # FIXME: explicitly check if dbhash raised this exception?
             return bsddb.hashopen(*args, **kwargs)
         raise
-    except anydbm.error, e:
+    except anydbm.error as e:
         msg = str(e)
         if msg.endswith('new db'):
             raise NoSuchFileError(msg)

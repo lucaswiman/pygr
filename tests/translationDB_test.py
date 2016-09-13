@@ -51,7 +51,7 @@ class TranslationDB_Test(unittest.TestCase):
         try:
             self.tdb.annodb['fooBar']
             assert 0, "should not reach this point"
-        except KeyError, e:
+        except KeyError as e:
             assert 'fooBar' in str(e)
 
 if __name__ == '__main__':

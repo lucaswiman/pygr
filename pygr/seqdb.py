@@ -787,7 +787,7 @@ cannot create with prefixDict and filename both!''')
         prefix, seqID = self.get_prefix_id(k)
         try:
             d = self.prefixDict[prefix]
-        except KeyError, e:
+        except KeyError as e:
             raise KeyError("no key '%s' in %s" % (k, repr(self)))
         return self.get_subitem(d, seqID)
 

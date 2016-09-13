@@ -262,7 +262,7 @@ def mysql_enabled():
     """
     try:
         import MySQLdb
-    except ImportError, exc:
+    except ImportError as exc:
         msg = 'MySQLdb error: %s' % exc
         warn(msg)
         return False
@@ -272,7 +272,7 @@ def mysql_enabled():
         # disable some MySQL specific spurious warnings, current scope only
         warnings.simplefilter("ignore")
         tempcurs.execute('create database if not exists test')
-    except Exception, exc:
+    except Exception as exc:
         msg = 'cannot operate on MySql database: %s' % exc
         warn(msg)
         return False
@@ -287,7 +287,7 @@ def sqlite_enabled():
     from pygr.sqlgraph import import_sqlite
     try:
         sqlite = import_sqlite() # from 2.5+ stdlib, or pysqlite2
-    except ImportError, exc:
+    except ImportError as exc:
         msg = 'sqlite3 error: %s' % exc
         warn(msg)
         return False

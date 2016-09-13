@@ -118,7 +118,7 @@ try:
     # try to import an extension module
     from pygr import cnestedlist
 
-except ImportError, exc:
+except ImportError as exc:
     stop("""
     %s
 

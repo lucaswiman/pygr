@@ -559,7 +559,7 @@ class Ensembl_Test(unittest.TestCase):
                                     serverInfo=conn)
             translationDB.catchIter = True # should not iter in this test!
             exonDB = SQLTable('homo_sapiens_core_47_36i.exon', serverInfo=conn)
-        except ImportError, e:
+        except ImportError as e:
             raise SkipTest(e)
 
         sql_statement = '''SELECT t3.exon_id FROM

@@ -722,7 +722,7 @@ class MetabaseBase(object):
         if persid.startswith('PYGR_ID:'):
             return self(persid[8:]) # RUN OUR STANDARD RESOURCE REQUEST PROCESS
         else: # UNKNOWN PERSISTENT ID... NOT FROM PYGR!
-            raise pickle.UnpicklingError, 'Invalid persistent ID %s' % persid
+            raise pickle.UnpicklingError('Invalid persistent ID %s' % persid)
 
     def load(self, resID, objdata, docstring):
         'load the pickled data and all its dependencies'

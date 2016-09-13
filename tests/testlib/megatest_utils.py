@@ -1,3 +1,5 @@
+from __future__ import absolute_import, print_function
+
 import BaseHTTPServer
 import errno
 import os
@@ -45,7 +47,7 @@ class MinimalistHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.end_headers()
         try:
             self.wfile.write(fout.read())
-        except socket.error, e:
+        except socket.error as e:
             # EPIPE likely means the client's closed the connection,
             # it's nothing of concern so suppress the error message.
             if errno.errorcode[e[0]] == 'EPIPE':

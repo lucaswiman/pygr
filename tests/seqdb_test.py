@@ -241,7 +241,7 @@ class SequenceFileDB_Test(unittest.TestCase):
         Make sure that the SequenceFileDB KeyError is informative."""
         try:
             self.db['foo']
-        except KeyError, e:
+        except KeyError as e:
             assert "no key 'foo' in database <SequenceFileDB" in str(e), str(e)
 
     def test_close(self):
@@ -604,11 +604,11 @@ class PrefixUnionDict_Test(unittest.TestCase):
         "Make sure that the PrefixUnionDict KeyError is informative."
         try:
             self.db['prefix.foo']
-        except KeyError, e:
+        except KeyError as e:
             assert "no key 'foo' in " in str(e), str(e)
         try:
             self.db['foo']
-        except KeyError, e:
+        except KeyError as e:
             assert "invalid id format; no prefix: foo" in str(e), str(e)
 
     def test_readonly(self):
