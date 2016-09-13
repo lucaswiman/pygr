@@ -1,9 +1,9 @@
-from __future__ import absolute_import, print_function, unicode_literals
+from __future__ import absolute_import, print_function
 
-from mapping import *
-from sequence import SequenceBase, DNA_SEQTYPE, RNA_SEQTYPE, PROTEIN_SEQTYPE
+from .mapping import *
+from .sequence import SequenceBase, DNA_SEQTYPE, RNA_SEQTYPE, PROTEIN_SEQTYPE
 import types
-from classutil import methodFactory, standard_getstate,\
+from .classutil import methodFactory, standard_getstate,\
      override_rich_cmp, generate_items, get_bound_subclass, standard_setstate,\
      get_valid_path, standard_invert, RecentValueDictionary, read_only_error,\
      SourceFileName, split_kwargs
@@ -11,7 +11,7 @@ import os
 import platform
 import UserDict
 import warnings
-import logger
+from . import logger
 
 
 class TupleDescriptor(object):

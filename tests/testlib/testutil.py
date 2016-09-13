@@ -16,9 +16,9 @@ import unittest
 import warnings
 import tempfile as tempfile_mod
 
-from unittest_extensions import SkipTest
+from .unittest_extensions import SkipTest
 
-import pathfix
+from . import pathfix
 from pygr import logger, classutil
 
 try:

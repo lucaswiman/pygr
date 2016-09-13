@@ -1,9 +1,11 @@
+from __future__ import absolute_import, print_function
+
 import os
 import sys
 import tempfile
 from weakref import WeakValueDictionary
-import dbfile
-import logger
+from . import dbfile
+from . import logger
 
 
 class FilePopenBase(object):
@@ -190,7 +192,7 @@ to pickle a relative path'''
 
     def __reduce__(self):
         if not os.path.isabs(str(self)):
-            print >>sys.stderr, '''
+            print('''
 WARNING: You are trying to pickle an object that has a local
 file dependency stored only as a relative file path:
 %s
@@ -201,7 +203,7 @@ To avoid this problem, SourceFileName is saving the current
 working directory path so that it can translate the relative
 path to an absolute path.  In the future, please use absolute
 paths when constructing objects that you intend to save to worldbase
-or pickle!''' % str(self)
+or pickle!''' % str(self), file=sys.stderr)
         return (filename_unpickler, (self.__class__, str(self),
                                     dict(curdir=os.getcwd())))
 
@@ -242,7 +244,7 @@ def report_exception():
     import traceback
     info = sys.exc_info()[:2]
     l = traceback.format_exception_only(info[0], info[1])
-    print >>sys.stderr, 'Warning: caught %s\nContinuing...' % l[0]
+    print('Warning: caught %s\nContinuing...' % l[0], file=sys.stderr)
 
 
 def standard_invert(self):
@@ -319,8 +321,8 @@ def standard_setstate(self, state):
     'apply dict of saved state by passing as kwargs to constructor'
     if isinstance(state, list):  # GET RID OF THIS BACKWARDS-COMPATIBILITY CODE
         self.__init__(*state)
-        print >>sys.stderr, 'WARNING: obsolete list pickle %s. Update \
-                by resaving!' % repr(self)
+        print('WARNING: obsolete list pickle %s. Update \
+                by resaving!' % repr(self), file=sys.stderr)
     else:
         state['unpicklingMode'] = True # SIGNAL THAT WE ARE UNPICKLING
         self.__init__(**state)

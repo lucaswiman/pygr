@@ -1,9 +1,10 @@
 from __future__ import absolute_import, print_function
 
-from sequence import *
-import classutil
 import UserDict
 import weakref
+
+from .sequence import *
+from . import classutil
 
 
 def getAnnotationAttr(self, attr):
@@ -364,12 +365,12 @@ cannot create annotation object %s; sequence database %s may not be correct'''
     def __del__(self):
         if self.close():
             import sys
-            print >>sys.stderr, '''
+            print('''
 WARNING: you forgot to call AnnotationDB.close() after writing
 new annotation data to it.  This could result in failure to properly
 store the data in the associated disk file.  To avoid this, we
 have automatically called AnnotationDB.sliceDB.close() to write the data
-for you, when the AnnotationDB was deleted.'''
+for you, when the AnnotationDB was deleted.''', file=sys.stderr)
 
     def clear_cache(self):
         'empty the cache'

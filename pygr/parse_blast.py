@@ -219,4 +219,4 @@ if __name__=='__main__':
     import sys
     p=BlastHitParser()
     for t in p.parse_file(sys.stdin):
-        print t
+        print(t)

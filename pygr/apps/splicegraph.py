@@ -145,7 +145,7 @@ def loadSpliceGraph(jun03, cluster_t, exon_t, splice_t, genomic_seq_t,
     exon_forms.objclass(ExonForm)
 
     if loadAll:
-        print 'Loading %s...' % exon_forms
+        print('Loading %s...' % exon_forms)
         exon_forms.load(ExonForm)
 
     clusters = jun03[cluster_t]
@@ -156,17 +156,17 @@ def loadSpliceGraph(jun03, cluster_t, exon_t, splice_t, genomic_seq_t,
     # Bind this class to container as the one to use as "row objects".
     clusters.objclass(Cluster)
     if loadAll:
-        print 'Loading %s...' % clusters
+        print('Loading %s...' % clusters)
         clusters.load(Cluster)
 
     splices = jun03[splice_t]
     # Bind this class to container as the one to use as "row objects".
     splices.objclass(Splice)
     if loadAll:
-        print 'Loading %s...' % splices
+        print('Loading %s...' % splices)
         splices.load(Splice)
 
-##     print 'Saving alignment of protein to mrna isoforms...'
+##     print('Saving alignment of protein to mrna isoforms...')
 ##     mrna_protein=PathMapping2()
 ##     for form_id in protein:
 ##         p=protein[form_id]
@@ -175,12 +175,12 @@ def loadSpliceGraph(jun03, cluster_t, exon_t, splice_t, genomic_seq_t,
 ##         end=start+3*p.protein_length
 ##         mrna_protein[p]=m[start:end]
 
-        print 'Adding clusters to graph...'
+        print('Adding clusters to graph...')
         for c in clusters.values(): # ADD CLUSTERS AS NODES TO GRAPH
             clusterExons+=c
             clusterSplices+=c
 
-        print 'Adding exons to graph...'
+        print('Adding exons to graph...')
         for e in exon_forms.values():
             c=clusters[e.cluster_id]
             try:
@@ -189,7 +189,7 @@ def loadSpliceGraph(jun03, cluster_t, exon_t, splice_t, genomic_seq_t,
             except IndexError:
                 pass # BAD EXON: EMPTY SEQUENCE INTERVAL... IGNORE IT
 
-        print 'Adding splices to graph...'
+        print('Adding splices to graph...')
         for s in splices.values():
             try:
                 c=clusters[s.cluster_id]
@@ -198,7 +198,7 @@ def loadSpliceGraph(jun03, cluster_t, exon_t, splice_t, genomic_seq_t,
             else:
                 c.splices+=s
 
-        print 'Building splice graph...'
+        print('Building splice graph...')
         for c in clusters.values():
             buildClusterSpliceGraph(c, alt5, alt3)
 

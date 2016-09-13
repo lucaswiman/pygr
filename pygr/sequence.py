@@ -1,7 +1,7 @@
 from __future__ import absolute_import, print_function
 
 import types
-from sequtil import *
+from .sequtil import *
 
 
 NOT_ON_SAME_PATH = -2
@@ -830,7 +830,7 @@ class SeqDBSlice(SeqPath):
 ##             dict.update(self, p.path._next[self.pos])
 ##
 ##     def __setitem__(self, k, val):
-##         print 'entered PathEdgeDict.setitem'
+##         print('entered PathEdgeDict.setitem')
 ##         if not hasattr(self.path, '_next'):
 ##             self.path._next = {}
 ##         if self.pos not in self.path._next:

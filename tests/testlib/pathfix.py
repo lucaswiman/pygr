@@ -17,7 +17,7 @@ import platform
 import os
 import sys
 
-import testoptions
+from . import testoptions
 
 
 def path_join(*args):

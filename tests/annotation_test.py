@@ -1,5 +1,6 @@
 import unittest
-from testlib import testutil, PygrTestProgram
+from testlib import testutil
+from testlib.unittest_extensions import PygrTestProgram
 from pygr import sequence, seqdb, sequtil, annotation
 from pygr.sequence import Sequence
 from pygr.annotation import AnnotationDB

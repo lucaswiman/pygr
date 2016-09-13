@@ -5,7 +5,7 @@ __version__ = "0.8.2"
 try:
     worldbase
 except NameError:
-    import metabase
+    from . import metabase
     mdb = metabase.MetabaseList() # use default WORLDBASEPATH
     worldbase = mdb.Data
 

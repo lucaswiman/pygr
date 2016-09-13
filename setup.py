@@ -9,7 +9,7 @@ on bioinformatics applications ranging from genome-wide analysis of
 alternative splicing patterns, to comparative genomics queries of
 multi-genome alignment data.
 """
-from __future__ import absolute_import, print_function, unicode_literals
+from __future__ import absolute_import, print_function
 
 import os
 import sys

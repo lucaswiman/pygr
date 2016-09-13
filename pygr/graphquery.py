@@ -762,7 +762,7 @@ class GraphQuery(object):
             if q[i].queryNode not in visited: # ADD NEIGHBORS TO THE QUEUE
                 visited[q[i].queryNode] = True # MARK AS VISITED
                 for node in queryGraph[q[i].queryNode]: # GET ALL ITS NEIGHBORS
-                    #print 'QUEUE:', n, node
+                    #print('QUEUE:', n, node)
                     q.append(self.newGQI(GraphQueryIterator, q[i].queryNode,
                                          node, dataGraph, queryGraph,
                                          dataMatch, queryMatch,
@@ -778,7 +778,7 @@ class GraphQuery(object):
         while i >= 0:
             dataNode = self.q[i].next()
             if dataNode is not None:
-                #print i,qu[i].queryNode,dataNode
+                #print(i,qu[i].queryNode,dataNode)
                 if i + 1 < n: # MORE LEVELS TO QUERY?
                     i += 1 # ADVANCE TO NEXT QUERY LEVEL
                     self.q[i].restart()

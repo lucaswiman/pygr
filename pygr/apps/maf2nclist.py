@@ -14,7 +14,7 @@ def maf2nclist(maffiles, stem):
 
         l = f.readline()
         while l:
-##            print l
+##            print(l)
             la = l.split()
             if(len(la) == 0 or la[0] == '#'):
                 pass
@@ -31,7 +31,7 @@ def storeMAFrecord(align, seqs, fh):
     s = fh.readline().split()
     begin = align.seqlist[0].length
     while len(s) == 7 and s[0] == 's':
-##        print s
+##        print(s)
         lpoStart = begin
         seqStart = int(s[2])
         try:

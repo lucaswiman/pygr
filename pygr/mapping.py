@@ -1,7 +1,7 @@
-from __future__ import absolute_import, print_function, unicode_literals
+from __future__ import absolute_import, print_function
 
-from schema import *
-import classutil
+from .schema import *
+from . import classutil
 
 
 def update_graph(self, graph):
@@ -358,14 +358,14 @@ does not exist will create it using mode 'c'. '''
             # Ambiguous modes, warn & set default.
             if verbose:
                 import sys
-                print >>sys.stderr, '''Warning: you opened shelve file %s
+                print('''Warning: you opened shelve file %s
 in mode '%s' but this is ambiguous for how the shelve should be
 re-opened later during unpickling.  By default it will be
 re-opened in mode 'r' (read-only).  To make it be re-opened
 writable, create it in mode '%sw', or call its method
 reopen('w'), which will make it be re-opened in mode 'w' now and
 in later unpickling.  To suppress this warning message, use the
-verbose=False option.''' % (filename, mode, mode)
+verbose=False option.''' % (filename, mode, mode), sys.stderr)
             self.mode = 'r'
         else: # PROCESS UNAMBIGUOUS TWO-LETTER mode STRING
             try:
@@ -660,17 +660,17 @@ def graph_cmp(self, other):
     import sys
     diff = cmp(len(self), len(other))
     if diff != 0:
-        print >>sys.stderr, 'len diff:', len(self), len(other)
+        print('len diff:', len(self), len(other), file=sys.stderr)
         return diff
     for node, d in self.iteritems():
         try:
             d2 = other[node]
         except KeyError:
-            print >>sys.stderr, 'other missing key'
+            print('other missing key', file=sys.stderr)
             return 1
         diff = cmp(d, d2)
         if diff != 0:
-            print >>sys.stderr, 'value diff', d, d2
+            print('value diff', d, d2, file=sys.stderr)
             return diff
     return 0
 

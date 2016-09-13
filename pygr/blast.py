@@ -3,14 +3,14 @@ import os
 import tempfile
 import classutil
 import logger
-from sequtil import *
-from parse_blast import BlastHitParser
-from seqdb import write_fasta, read_fasta
-from nlmsa_utils import CoordsGroupStart, CoordsGroupEnd, CoordsToIntervals,\
+from .sequtil import *
+from .parse_blast import BlastHitParser
+from .seqdb import write_fasta, read_fasta
+from .nlmsa_utils import CoordsGroupStart, CoordsGroupEnd, CoordsToIntervals,\
      EmptySlice
 from annotation import AnnotationDB, TranslationAnnot, TranslationAnnotSlice
-import cnestedlist
-import translationDB
+from . import cnestedlist
+from . import translationDB
 import UserDict
 
 # NCBI HAS THE NASTY HABIT OF TREATING THE IDENTIFIER AS A BLOB INTO

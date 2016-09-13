@@ -1,4 +1,4 @@
-from __future__ import absolute_import, print_function, unicode_literals
+from __future__ import absolute_import, print_function
 
 import datetime
 import os
@@ -7,10 +7,10 @@ import re
 import sys
 import UserDict
 from StringIO import StringIO
-from mapping import Collection, Mapping, Graph
-from classutil import open_shelve, standard_invert, get_bound_subclass, \
+from .mapping import Collection, Mapping, Graph
+from .classutil import open_shelve, standard_invert, get_bound_subclass, \
      SourceFileName
-from coordinator import XMLRPCServerBase
+from .coordinator import XMLRPCServerBase
 
 
 try:
@@ -332,7 +332,7 @@ class XMLRPCMetabase(object):
     'client interface to remote XMLRPC resource database'
 
     def __init__(self, url, mdb, **kwargs):
-        from coordinator import get_connection
+        from .coordinator import get_connection
         self.server = get_connection(url, 'index')
         self.url=url
         self.mdb = mdb
@@ -392,7 +392,7 @@ class MySQLMetabase(object):
 
     def __init__(self, tablename, mdb, createLayer=None, newZone=None,
                  **kwargs):
-        from sqlgraph import get_name_cursor, SQLGraph
+        from .sqlgraph import get_name_cursor, SQLGraph
         self.tablename, self.cursor, self.serverInfo = \
                 get_name_cursor(tablename)
         self.mdb = mdb
@@ -433,12 +433,12 @@ class MySQLMetabase(object):
                                         pygr_id=%%s' % self.tablename,
                                         ('PYGRLAYERNAME', ))
             except StandardError:
-                print >>sys.stderr, '''%s
+                print('''%s
 Database table %s appears to be missing or has no layer name!
 To create this table, call
 worldbase.MySQLMetabase("%s", createLayer=<LAYERNAME>)
 where <LAYERNAME> is the layer name you want to assign it.
-%s''' % ('!' * 40, self.tablename, self.tablename, '!' * 40)
+%s''' % ('!' * 40, self.tablename, self.tablename, '!' * 40), file=sys.stderr)
                 raise
             if n > 0:
                 # Get layer name from the db.
@@ -735,13 +735,13 @@ class MetabaseBase(object):
             saver.add_resource(resID, obj) # add to queue for commit
             obj._saveLocalBuild = False # NO NEED TO SAVE THIS AGAIN
             if hasPending:
-                print >>sys.stderr, \
+                print(
 '''Saving new resource %s to local worldbase...
 You must use worldbase.commit() to commit!
 You are seeing this message because you appear to be in the middle
 of a worldbase transaction.  Ordinarily worldbase would automatically commit
 this new downloaded resource, but doing so now would also commit your pending
-transaction, which you may not be ready to do!''' % resID
+transaction, which you may not be ready to do!''' % resID, file=sys.stderr)
             else: # automatically save new resource
                 saver.save_pending() # commit it
         else: # NORMAL USAGE
@@ -1095,8 +1095,8 @@ class MetabaseList(MetabaseBase):
                     else: # warn the user but keep going...
                         import traceback
                         traceback.print_exc(10, sys.stderr)
-                        print >>sys.stderr, '''
-WARNING: error accessing metabase %s.  Continuing...''' % dbpath
+                        print(sys.stderr, '''
+WARNING: error accessing metabase %s.  Continuing...''' % dbpath, file=sys.stderr)
                 else: # NO PROBLEM, SO ADD TO OUR RESOURCE DB LIST
                     # Save to our list of resource databases.
                     self.mdb.append(mdb)
@@ -1292,7 +1292,7 @@ the reproducible steps to this error message as a bug report.''' % resID)
     def __del__(self):
         try:
             self.save_pending() # SEE WHETHER ANY DATA NEEDS SAVING
-            print >>sys.stderr, '''
+            print('''
 WARNING: saving worldbase pending data that you forgot to save...
 Remember in the future, you must issue the command worldbase.commit() to save
 your pending worldbase resources to your resource database(s), or alternatively
@@ -1300,7 +1300,7 @@ worldbase.rollback() to dump those pending data without saving them.
 It is a very bad idea to rely on this automatic attempt to save your
 forgotten data, because it is possible that the Python interpreter
 may never call this function at exit (for details see the atexit module
-docs in the Python Library Reference).'''
+docs in the Python Library Reference).''', file=sys.stderr)
         except WorldbaseEmptyError:
             pass
 

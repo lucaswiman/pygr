@@ -1,4 +1,6 @@
-from __future__ import generators
+from __future__ import absolute_import, print_function
+
+import logging
 import os
 import time
 import thread
@@ -8,8 +10,7 @@ import traceback
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 import socket
 
-import dbfile
-import logging
+from . import dbfile
 
 
 def get_hostname(host=None):
@@ -103,8 +104,8 @@ def safe_dispatch(self, name, args):
     if name in self.xmlrpc_methods:
         # Make sure this method is explicitly allowed.
         try: # TRAP ALL ERRORS TO PREVENT OUR SERVER FROM DYING
-            print >>sys.stderr, 'XMLRPC:', name, args, \
-                  datetime.datetime.now().isoformat(' ') # LOG THE REQUEST
+            print('XMLRPC:', name, args, \
+                  datetime.datetime.now().isoformat(' '), sys.stderr) # LOG THE REQUEST
             if self.xmlrpc_methods[name]: # use this as an alias for method
                 m = getattr(self, self.xmlrpc_methods[name])
             else: # use method name as usual
@@ -117,8 +118,7 @@ def safe_dispatch(self, name, args):
         except: # METHOD RAISED AN EXCEPTION, SO PRINT TRACEBACK TO STDERR
             traceback.print_exc(self.max_tb, sys.stderr)
     else:
-        print >>sys.stderr, "safe_dispatch: blocked unregistered method %s" \
-                % name
+        print("safe_dispatch: blocked unregistered method %s" % name, file=sys.stderr)
     return False # THIS RETURN VALUE IS CONFORMABLE BY XMLRPC...
 
 
@@ -197,8 +197,8 @@ def detach_as_demon_process(self):
 def serve_forever(self):
     'start the service -- this will run forever'
     import datetime
-    print >>sys.stderr, "START_SERVER:%s %s" % (self.name, datetime.datetime.
-                                                now().isoformat(' '))
+    print("START_SERVER:%s %s" % (self.name, datetime.datetime.
+                                                now().isoformat(' ')), file=sys.stderr)
     sys.stderr.flush()
     self.server.serve_forever()
 
@@ -305,8 +305,7 @@ class XMLRPCServerBase(object):
             if methodname in obj.xmlrpc_methods:
                 m = getattr(obj, methodname)
             else:
-                print >>sys.stderr, \
-                      "methodCall: blocked unregistered method %s" % methodname
+                print("methodCall: blocked unregistered method %s" % methodname, file=sys.stderr)
                 return ''
         except (KeyError, AttributeError):
             return '' # RETURN FAILURE CODE
@@ -319,13 +318,13 @@ class XMLRPCServerBase(object):
                             serve_forever; use 'daemonize' instead!")
             daemonize = demonize
 
-        print 'Serving on interface "%s", port %d' % (self.host, self.port, )
+        print('Serving on interface "%s", port %d' % (self.host, self.port, ))
 
         if daemonize:
-            print "detaching to run as a daemon."
+            print("detaching to run as a daemon.")
             pid = detach_as_demon_process(self)
             if pid:
-                print 'PID', pid
+                print('PID', pid)
                 sys.exit(0)
 
         serve_forever(self)
@@ -510,8 +509,8 @@ class ResourceController(object):
         try:
             del self.rules[rsrc]
         except KeyError:
-            print >>sys.stderr, "Attempt to delete unknown resource rule %s" \
-                    % rsrc
+            print("Attempt to delete unknown resource rule %s" \
+                    % rsrc, file=sys.stderr)
         else:
             self.rules.close() # THIS IS THE ONLY WAY I KNOW TO FLUSH...
             self.getrules()
@@ -538,15 +537,15 @@ class ResourceController(object):
                              immediate, demand_ncpu):
         "save a coordinator's registration info"
         try:
-            print >>sys.stderr, 'change_priority: %s (%s,%s): %f -> %f' \
+            print('change_priority: %s (%s,%s): %f -> %f' \
                   % (name, user, url, self.coordinators[url].priority,
-                     priority)
+                     priority), file=sys.stderr)
             self.coordinators[url].priority = priority
             self.coordinators[url].immediate = immediate
             self.coordinators[url].demand_ncpu = demand_ncpu
         except KeyError:
-            print >>sys.stderr, 'register_coordinator: %s (%s,%s): %f' \
-                  % (name, user, url, priority)
+            print('register_coordinator: %s (%s,%s): %f' \
+                  % (name, user, url, priority), file=sys.stderr)
             self.coordinators[url] = CoordinatorInfo(name, url, user, priority,
                                                      resources, self.njob,
                                                      immediate, demand_ncpu)
@@ -558,12 +557,12 @@ class ResourceController(object):
         "remove a coordinator from our list"
         try:
             del self.coordinators[url]
-            print >>sys.stderr, 'unregister_coordinator: %s (%s): %s' \
-                  % (name, url, message)
+            print('unregister_coordinator: %s (%s): %s' \
+                  % (name, url, message), file=sys.stderr)
             self.load_balance() # FORCE IT TO REBALANCE THE LOAD TO NEW JOBS...
         except KeyError:
-            print >>sys.stderr, 'unregister_coordinator: %s unknown:%s (%s)' \
-                  % (name, url, message)
+            print('unregister_coordinator: %s unknown:%s (%s)' \
+                  % (name, url, message), file=sys.stderr)
         return True  # USE THIS AS DEFAULT XMLRPC RETURN VALUE
 
     def request_cpus(self, name, url):
@@ -571,8 +570,8 @@ class ResourceController(object):
         try:
             c = self.coordinators[url]
         except KeyError:
-            print >>sys.stderr, 'request_cpus: unknown coordinator %s @ %s' \
-                    % (name, url)
+            print('request_cpus: unknown coordinator %s @ %s' \
+                    % (name, url), file=sys.stderr)
             return [] # HAND BACK AN EMPTY LIST
         # Calculate how many CPUs each coordinator should get.
         self.assign_load()
@@ -648,8 +647,8 @@ class ResourceController(object):
         try:
             del self.locks[key] # REMOVE THE LOCK
         except KeyError:
-            print >> sys.stderr, "attempt to release non-existent lock \
-                    %s,%s:%d" % (host, rule, pid)
+            print("attempt to release non-existent lock \
+                    %s,%s:%d" % (host, rule, pid), file=sys.stderr)
         return True  # USE THIS AS DEFAULT XMLRPC RETURN VALUE
 
     def retry_unused_hosts(self):
@@ -802,27 +801,26 @@ class Coordinator(object):
         "start a processor on a client node"
         import tempfile
         if len(self.clients) >= self.ncpu_limit:
-            print >>sys.stderr, 'start_client: blocked, CPU limit', \
-                  len(self.clients), self.ncpu_limit
+            print('start_client: blocked, CPU limit',
+                  len(self.clients), self.ncpu_limit, file=sys.stderr)
             return # DON'T START ANOTHER PROCESS, TOO MANY ALREADY
         if len(self.clients) >= self.max_clients:
-            print >>sys.stderr, 'start_client: blocked, too many already', \
-                  len(self.clients), self.max_clients
+            print('start_client: blocked, too many already', \
+                  len(self.clients), self.max_clients, file=sys.stderr)
             return # DON'T START ANOTHER PROCESS, TOO MANY ALREADY
         try:
             if len(self.clients_starting[host]) >= self.max_ssh_errors:
-                print >>sys.stderr, \
-                      'start_client: blocked, too many unstarted jobs:', \
-                      host, self.clients_starting[host]
+                print('start_client: blocked, too many unstarted jobs:',
+                      host, self.clients_starting[host], file=sys.stderr)
                 return # DON'T START ANOTHER PROCESS, host MAY BE DEAD...
         except KeyError: # NO clients_starting ON host, GOOD!
             pass
         try:
             if len(self.initialization_errors[host]) >= \
                self.max_initialization_errors:
-                print >>sys.stderr, 'start_client: blocked, too many \
-                        initialization errors:', host, \
-                        self.initialization_errors[host]
+                print('start_client: blocked, too many \
+                        initialization errors:', host,
+                        self.initialization_errors[host], file=sys.stderr)
                 return # DON'T START ANOTHER PROCESS, host HAS A PROBLEM
         except KeyError: # NO initialization_errors ON host, GOOD!
             pass
@@ -840,7 +838,7 @@ class Coordinator(object):
         # UGH, HAVE TO MIX CSH REDIRECTION (REMOTE) WITH SH REDIRECTION (LOCAL)
         ssh_cmd = "ssh %s %s '(%s) </dev/null >&%s &' </dev/null >>%s 2>&1 &" \
                  % (sshopts, host, cmd, logfile, self.errlog)
-        print >>sys.stderr, 'SSH: ' + ssh_cmd
+        print('SSH: ' + ssh_cmd, file=sys.stderr)
         self.logfile[logfile] = [host, False, self.iclient] # NO PID YET
         try: # RECORD THIS CLIENT AS STARTING UP
             self.clients_starting[host][self.iclient] = time.time()
@@ -870,26 +868,25 @@ class Coordinator(object):
 
     def register_client(self, host, pid, logfile):
         'XMLRPC call to register client hostname and PID as starting_up'
-        print >>sys.stderr, 'register_client: %s:%d' % (host, pid)
+        print('register_client: %s:%d' % (host, pid), file=sys.stderr)
         self.clients[(host, pid)] = 0
         try:
             self.logfile[logfile][1] = pid # SAVE OUR PID
             iclient = self.logfile[logfile][2] # GET ITS CLIENT ID
             del self.clients_starting[host][iclient] #REMOVE FROM STARTUP LIST
         except KeyError:
-            print >>sys.stderr, 'no client logfile?', host, pid, logfile
+            print('no client logfile?', host, pid, logfile, file=sys.stderr)
         self.clients_initializing[(host, pid)] = logfile
         return True  # USE THIS AS DEFAULT XMLRPC RETURN VALUE
 
     def unregister_client(self, host, pid, message):
         'XMLRPC call to remove client from register as exiting'
-        print >>sys.stderr, 'unregister_client: %s:%d %s' \
-                % (host, pid, message)
+        print('unregister_client: %s:%d %s' % (host, pid, message), file=sys.stderr)
         try:
             del self.clients[(host, pid)]
         except KeyError:
-            print >>sys.stderr, 'unregister_client: unknown client %s:%d' \
-                    % (host, pid)
+            print('unregister_client: unknown client %s:%d'
+                    % (host, pid), file=sys.stderr)
         try: # REMOVE IT FROM THE LIST OF CLIENTS TO SHUTDOWN, IF PRESENT
             del self.stop_clients[(host, pid)]
         except KeyError:
@@ -906,25 +903,25 @@ class Coordinator(object):
     def report_success(self, host, pid, success_id):
         'mark task as successfully completed'
         # Keep permanent record of success ID.
-        print >>self.successfile, success_id
+        print(success_id, file=self.successfile)
         self.successfile.flush()
         self.nsuccess += 1
         try:
             self.clients[(host, pid)] += 1
         except KeyError:
-            print >>sys.stderr, 'report_success: unknown client %s:%d' \
-                    % (host, pid)
+            print('report_success: unknown client %s:%d'
+                    % (host, pid), file=sys.stderr)
         try:
             del self.pending[success_id]
         except KeyError:
-            print >>sys.stderr, 'report_success: unknown ID %s' \
-                    % str(success_id)
+            print('report_success: unknown ID %s'
+                    % str(success_id), file=sys.stderr)
         return True  # USE THIS AS DEFAULT XMLRPC RETURN VALUE
 
     def report_error(self, host, pid, id, tb_report):
         "get traceback report from client as text"
-        print >>sys.stderr, "TRACEBACK: %s:%s ID %s\n%s" % \
-              (host, str(pid), str(id), tb_report)
+        print("TRACEBACK: %s:%s ID %s\n%s" %
+              (host, str(pid), str(id), tb_report), file=sys.stderr)
         if (host, pid) in self.clients_initializing:
             logfile = self.clients_initializing[(host, pid)]
             try:
@@ -936,9 +933,9 @@ class Coordinator(object):
         except KeyError:
             # Not associated with an actual task ID, do not record.
             if id is not None and id is not False:
-                print >>sys.stderr, 'report_error: unknown ID %s' % str(id)
+                print('report_error: unknown ID %s' % str(id), file=sys.stderr)
         else:
-            print >>self.errorfile, id # KEEP PERMANENT RECORD OF FAILURE ID
+            print(id, file=self.errorfile) # KEEP PERMANENT RECORD OF FAILURE ID
             self.nerrors += 1
             self.errorfile.flush()
         return True  # USE THIS AS DEFAULT XMLRPC RETURN VALUE
@@ -946,7 +943,7 @@ class Coordinator(object):
     def next(self, host, pid, success_id):
         'return next ID from iterator to the XMLRPC caller'
         if (host, pid) not in self.clients:
-            print >>sys.stderr, 'next: unknown client %s:%d' % (host, pid)
+            print('next: unknown client %s:%d' % (host, pid), file=sys.stderr)
             return False # HAND BACK "NO MORE FOR YOU TO DO" SIGNAL
         try: # INITIALIZATION DONE, SO REMOVE FROM INITIALIZATION LIST
             del self.clients_initializing[(host, pid)]
@@ -962,18 +959,17 @@ class Coordinator(object):
         except KeyError: # DO ONE MORE CHECK: ARE WE OVER OUR MAX ALLOWED LOAD?
             if len(self.clients) > self.max_clients:
                 # Yes, better throttle down.
-                print >>sys.stderr, 'next: halting %s:too many processors \
-                        (%d>%d)' % (host, len(self.clients), self.max_clients)
+                print('next: halting %s:too many processors \
+                        (%d>%d)' % (host, len(self.clients), self.max_clients), file=sys.stderr)
                 return False # HAND BACK "NO MORE FOR YOU TO DO" SIGNAL
         for id in self.it: # GET AN ID WE CAN USE
             if str(id) not in self.already_done:
                 self.n += 1 # GREAT, WE CAN USE THIS ID
                 self.lastID = id
                 self.pending[id] = (host, pid, time.time())
-                print >>sys.stderr, 'giving id %s to %s:%d' % (str(id),
-                                                               host, pid)
+                print('giving id %s to %s:%d' % (str(id), host, pid), file=sys.stderr)
                 return id
-        print >>sys.stderr, 'exhausted all items from iterator!'
+        print('exhausted all items from iterator!', file=sys.stderr)
         self.done = True # EXHAUSTED OUR ITERATOR
         # Release our claims on any further processor allication
         # and inform the resource controller about it.
@@ -1021,7 +1017,7 @@ try:
             localFile, cpCommand = rule
             if not os.access(localFile, os.R_OK):
                 cmd = cpCommand % localFile
-                print 'copying data:', cmd
+                print('copying data:', cmd)
                 os.system(cmd)
             # Now, initialise as a real file object.
             file.__init__(self, localFile, mode)
@@ -1060,7 +1056,7 @@ class Processor(object):
         "add ourselves to list of processors for this server"
         self.server.register_client(self.host, self.pid, self.logfile)
         self.rc_server.register_processor(self.host, self.pid, self.url)
-        print >>sys.stderr, 'REGISTERED:', self.url, self.rc_url
+        print('REGISTERED:', self.url, self.rc_url, file=sys.stderr)
 
     def unregister(self, message):
         "remove ourselves from list of processors for this server"
@@ -1068,7 +1064,7 @@ class Processor(object):
             self.report_success(self.success_id)
         self.server.unregister_client(self.host, self.pid, message)
         self.rc_server.unregister_processor(self.host, self.pid, self.url)
-        print >>sys.stderr, 'UNREGISTERED:', self.url, self.rc_url, message
+        print('UNREGISTERED:', self.url, self.rc_url, message, file=sys.stderr)
 
     def __iter__(self):
         return self
@@ -1301,7 +1297,7 @@ class CoordinatorMonitor(object):
         self.name, self.errlog, self.n, self.nsuccess, self.nerrors, \
                 self.client_report, self.pending_report, \
                 self.logfile = self.server.get_status()
-        print "Got status from Coordinator: ", self.name, self.url
+        print("Got status from Coordinator: ", self.name, self.url)
 
     def __getattr__(self, attr):
         "just pass on method requests to our server"
@@ -1328,14 +1324,14 @@ class RCMonitor(object):
         self.name, self.errlog, self.systemLoad, self.hosts, \
                 coordinators, self.rules, self.resources, \
                 self.locks = self.rc_server.get_status()
-        print "Got status from ResourceController:", self.name, self.rc_url
+        print("Got status from ResourceController:", self.name, self.rc_url)
         self.coordinators = {}
         for cinfo in coordinators:
             try: # IF COORDINATOR HAS DIED, STILL WANT TO RETURN RCMonitor...
                 self.coordinators[cinfo[0]] = CoordinatorMonitor(cinfo)
             except socket.error, e: # JUST COMPLAIN, BUT CONTINUE...
-                print >>sys.stderr, "Unable to connect to coordinator:", \
-                        cinfo, e
+                print("Unable to connect to coordinator:",
+                        cinfo, e, file=sys.stderr)
 
     def __getattr__(self, attr):
         "just pass on method requests to our rc_server"
@@ -1344,7 +1340,7 @@ class RCMonitor(object):
 
 def test_client(server, **kwargs):
     for id in server:
-        print 'ID', id
+        print('ID', id)
         yield id
         time.sleep(1)
 

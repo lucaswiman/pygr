@@ -52,14 +52,14 @@ class MafParser:
 
     def readalign(self, opt, fh):
         """internal function parses alignment record from .maf file"""
-##        print "entering readalign:", opt
+##        print("entering readalign:", opt)
         edgeInfo = {}
         for p in opt:
             (key, value) = p.split('=')
             edgeInfo[key] = value
 
         s = fh.readline().split()
-##        print s;
+##        print(s)
         if(len(s) == 7 and s[0] == 's'):
             vseq = self._vseq(len(s[6]))
             self.mAlign += vseq
@@ -99,15 +99,15 @@ class MafParser:
         l=filehandle.readline()
         while l:
             la = l.split()
-##            print la
+##            print(la)
             if(len(la)==0 or la[0]=='#'):
-##                print "skipping"
+##                print("skipping")
                 1
             elif(la[0]=='a'):
-##                print "reading alignment"
+##                print("reading alignment")
                 self.readalign(la[1:], filehandle)
             else:
-##                print "end of records"
+##                print("end of records")
                 return
 
             l=filehandle.readline()
@@ -157,12 +157,12 @@ class MafParser:
         l=filehandle.readline()
         while l:
             la = l.split()
-##            print la
+##            print(la)
             if(len(la)==0 or la[0]=='#'):
-##                print "skipping"
+##                print("skipping")
                 1
             elif(la[0]=='a'):
-##                print "reading alignment"
+##                print("reading alignment")
                 count+=1
                 self.readalign(la[1:], filehandle)
                 self._dump(alignTab, sequenceTab)
@@ -170,6 +170,6 @@ class MafParser:
                     cursor.execute(update % (int(filehandle.tell() * 100.
                                                  / filesize)))
             else:
-##                print "end of records"
+##                print("end of records")
                 return
             l=filehandle.readline()

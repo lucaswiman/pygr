@@ -3,11 +3,11 @@ from __future__ import absolute_import, print_function
 __all__ = ['logger', 'testoptions', 'testutil']
 
 # fix import paths first so that the right (dev) version of pygr is imported
-import pathfix
+from . import pathfix
 
 # import rest of test utils.
-import testoptions
-import testutil
+from . import testoptions
+from . import testutil
 
 # make SkipTest available
-from unittest_extensions import SkipTest, PygrTestProgram
+from .unittest_extensions import SkipTest, PygrTestProgram

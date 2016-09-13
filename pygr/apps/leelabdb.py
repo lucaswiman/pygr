@@ -2,7 +2,7 @@ from __future__ import absolute_import, print_function
 
 import MySQLdb
 import os
-from splicegraph import *
+from .splicegraph import *
 
 
 spliceCalcs={'HUMAN_SPLICE_03':
@@ -47,7 +47,7 @@ def getSpliceGraphFromDB(dbgroup, loadAll=False):
     If loadAll true, then load the entire splice graph into memory."""
     cursor = getUserCursor(dbgroup.db)
     import sys
-    print >>sys.stderr, 'Reading database schema...'
+    print('Reading database schema...', file=sys.stderr)
     idDict = {}
     tables = describeDBTables(dbgroup.db, cursor, idDict)
     if hasattr(dbgroup, 'suffix'):
@@ -70,7 +70,7 @@ def localCopy(localFile, cpCommand):
     'if not already present on local file location, run cpCommand'
     if not os.access(localFile, os.R_OK):
         cmd=cpCommand % localFile
-        print 'copying data:', cmd
+        print('copying data:', cmd)
         exit_code=os.system(cmd)
         if exit_code!=0:
             raise OSError((exit_code, 'command failed: %s' % cmd))

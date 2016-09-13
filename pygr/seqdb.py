@@ -139,22 +139,22 @@ Some long term issues:
 
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
+from __future__ import absolute_import, print_function
 
 import sys
 import os
 import UserDict
 import weakref
 
-from sequence import *                  # @CTB
-from sqlgraph import *                  # @CTB
-import classutil
-from annotation import AnnotationDB, AnnotationSeq, AnnotationSlice, \
+from .sequence import *                  # @CTB
+from .sqlgraph import *                  # @CTB
+from . import classutil
+from .annotation import AnnotationDB, AnnotationSeq, AnnotationSlice, \
      AnnotationServer, AnnotationClient
-import logger
-import seqfmt
+from . import logger
+from . import seqfmt
 
-from dbfile import NoSuchFileError
+from .dbfile import NoSuchFileError
 
 
 ####
@@ -840,10 +840,10 @@ cannot create with prefixDict and filename both!''')
     def writeHeaderFile(self, filename):  # @CTB not used; necessary?
         """Save a header file, suitable for later re-creation."""
         ifile = file(filename, 'w')
-        print >>ifile, self.separator
+        print(self.separator, file=ifile)
         for k, v in self.prefixDict.items():
             try:
-                print >>ifile, '%s\t%s' % (k, v.filepath)
+                print('%s\t%s' % (k, v.filepath), file=ifile)
             except AttributeError:
                 raise AttributeError('''\
 seq db '%s' has no filepath; you may be able to save this to worldbase,

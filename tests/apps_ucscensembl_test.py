@@ -1,5 +1,9 @@
+from __future__ import absolute_import, print_function
+
 import unittest
 from testlib import testutil, PygrTestProgram
+import socket
+socket.setdefaulttimeout(0.5)
 
 from pygr.apps.ucsc_ensembl_annot import UCSCEnsemblInterface
 
