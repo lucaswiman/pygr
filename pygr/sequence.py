@@ -333,7 +333,7 @@ class SeqPath(object):
         return self.classySlice(self, start, stop, absoluteCoords=True)
 
     def __getitem__(self, k):
-        if isinstance(k, types.IntType):
+        if isinstance(k, int):
             if k == -1: # HAVE TO HANDLE THIS CASE SPECIALLY
                 k = slice(k, None, 1) # -1 IS LAST LETTER, SO [-1:None] slice
             else: # REGULAR CASE, JUST [k:k+1] slice
@@ -413,7 +413,7 @@ class SeqPath(object):
                 return True
             else:
                 return False
-        elif isinstance(k, types.IntType):
+        elif isinstance(k, int):
             return self.start <= k and k < self.stop
 
     def overlaps(self, p):

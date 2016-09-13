@@ -11,7 +11,7 @@ import os
 import platform
 from collections import MutableMapping
 import warnings
-
+import six
 
 class TupleDescriptor(object):
     'return tuple entry corresponding to named attribute'
@@ -644,7 +644,7 @@ class SQLTableBase(MutableMapping):
                 except (KeyError, TypeError):
                     raise AttributeError('attribute %s does not map to a SQL \
 column!' % attr)
-        if isinstance(field, types.StringType):
+        if isinstance(field, six.string_types):
             # Use aliased expression for database select instead of attr.
             attr = field
         elif attr == 'id':
@@ -1566,7 +1566,7 @@ class SQLGraphClustered(object):
     def __init__(self, table, source_id='source_id', target_id='target_id',
                  edge_id='edge_id', clusterKey=None, **kwargs):
         import types
-        if isinstance(table, types.StringType): # CREATE THE TABLE INTERFACE
+        if isinstance(table, six.string_Types): # CREATE THE TABLE INTERFACE
             if clusterKey is None:
                 raise ValueError('you must provide a clusterKey argument!')
             if 'createTable' in kwargs: # CREATE A SCHEMA FOR THIS TABLE
@@ -1922,9 +1922,9 @@ def graphDBTables(tables, idDict):
     return g
 
 
-SQLTypeTranslation = {types.StringType: 'varchar(32)',
-                      types.IntType: 'int',
-                      types.FloatType: 'float'}
+SQLTypeTranslation = {six.text_type: 'varchar(32)',
+                      int: 'int',
+                      float: 'float'}
 
 
 def createTableFromRepr(rows, tableName, cursor, typeTranslation=None,

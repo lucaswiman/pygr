@@ -83,7 +83,7 @@ class UnkSequence(SeqPath):
             (start, stop, step) = (k.start, k.stop, k.step)
             if k.step == None:
                 step = 1
-        elif isinstance(k, types.IntType):
+        elif isinstance(k, int):
             start = k
             stop = k + 1
             if (k == -1):
