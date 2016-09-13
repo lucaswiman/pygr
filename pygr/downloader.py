@@ -1,7 +1,9 @@
+from __future__ import absolute_import, print_function
+
 import os
 import sys
-from classutil import call_subprocess
-import logger
+from .classutil import call_subprocess
+from . import logger
 
 # METHODS FOR AUTOMATIC DOWNLOADING OF RESOURCES
 

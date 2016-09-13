@@ -1,7 +1,6 @@
+from __future__ import absolute_import, print_function
 
-
-from __future__ import generators
-from mapping import *
+from .mapping import *
 
 
 class QueryMatchWrapper(dict):
