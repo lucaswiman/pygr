@@ -115,7 +115,8 @@ cdef class IntervalDB:
 
   def find_overlap_list(self, int start, int end):
     cdef int i, nhit
-    cdef IntervalIterator *it, *it_alloc
+    cdef IntervalIterator *it
+    cdef IntervalIterator *it_alloc
     cdef IntervalMap im_buf[1024]
     self.check_nonempty() # RAISE EXCEPTION IF NO DATA
     it = interval_iterator_alloc()
@@ -384,7 +385,8 @@ cdef class IntervalFileDB:
 
   def find_overlap_list(self, int start, int end):
     cdef int i, nhit
-    cdef IntervalIterator *it, *it_alloc
+    cdef IntervalIterator *it
+    cdef IntervalIterator *it_alloc
     cdef IntervalMap im_buf[1024]
     self.check_nonempty() # RAISE EXCEPTION IF NO DATA
     it = interval_iterator_alloc()
@@ -448,7 +450,8 @@ cdef class NLMSASlice:
     cdef int i, j, n, start_max, end_min, start2, stop2, nseq, istart, istop, localQuery
     cdef NLMSASequence ns_lpo
     cdef IntervalFileDBIterator it, it2
-    cdef IntervalMap *im, *im2
+    cdef IntervalMap *im
+    cdef IntervalMap *im2
     cdef int cacheMax
 
     if seq is None: # GET FROM NLMSASequence
@@ -1726,12 +1729,17 @@ See the NLMSA documentation for more details.\n''')
     'read alignment from a set of MAF files'
     cdef int i, j, nseq0, nseq1, n, nseq, block_len
     cdef SeqIDMap *seqidmap
-    cdef char tmp[32768], *p, a_header[4]
+    cdef char tmp[32768]
+    cdef char *p
+    cdef char a_header[4]
     cdef FILE *ifile
-    cdef IntervalMap im[4096], im_tmp
-    cdef NLMSASequence ns_lpo, ns # ns IS OUR CURRENT UNION
+    cdef IntervalMap im[4096]
+    cdef IntervalMap im_tmp
+    cdef NLMSASequence ns_lpo
+    cdef NLMSASequence ns # ns IS OUR CURRENT UNION
     cdef FILE *build_ifile[4096]
-    cdef int nbuild[4096], has_continuation
+    cdef int nbuild[4096]
+    cdef int has_continuation
     cdef long long linecode_count[256]
 
     ns_lpo = self.seqlist[self.lpo_id] # OUR INITIAL LPO
@@ -1859,12 +1867,18 @@ Check the input!''' % (pythonStr, seqInfo.length))
     'read alignment from a set of axtnet files'
     cdef int i, j, nseq0, n, isrc, is_bidirectional
     cdef SeqIDMap *seqidmap
-    cdef char tmp[32768], *p, comment[4], src_prefix[64], dest_prefix[64]
+    cdef char tmp[32768]
+    cdef char *p
+    cdef char comment[4]
+    cdef char src_prefix[64]
+    cdef char dest_prefix[64]
     cdef FILE *ifile
-    cdef IntervalMap im[4096], im_tmp
+    cdef IntervalMap im[4096]
+    cdef IntervalMap im_tmp
     cdef NLMSASequence ns_src # SOURCE UNION VS DEST UNION
     cdef FILE *build_ifile[4096]
-    cdef int nbuild[4096], has_continuation
+    cdef int nbuild[4096]
+    cdef int has_continuation
 
     self.pairwiseMode = 1 # WE ARE USING pairwiseMode
 
@@ -2051,7 +2065,9 @@ def dump_textfile(pathstem, outfilename=None):
   'dump NLMSA binary files to a text file'
   cdef int n, nlmsaID, nsID, offset, is_bidirectional, pairwiseMode, nprefix
   cdef FILE *outfile
-  cdef char err_msg[2048], tmp[2048], seqDictID[256]
+  cdef char err_msg[2048]
+  cdef char tmp[2048]
+  cdef char seqDictID[256]
   err_msg[0] = 0 # ENSURE STRING IS EMPTY
   if outfilename is None:
     outfilename = pathstem + '.txt' # DEFAULT TEXTFILE NAME
@@ -2147,7 +2163,11 @@ def textfile_to_binaries(filename, seqDict=None, prefixDict=None, buildpath=''):
   'convert pathstem.txt textfile to NLMSA binary files'
   cdef int i, n, nlmsaID, nsID, offset, is_bidirectional, pairwiseMode, nprefix
   cdef FILE *infile
-  cdef char err_msg[2048], line[32768], tmp[2048], basestem[2048], seqDictID[2048]
+  cdef char err_msg[2048]
+  cdef char line[32768]
+  cdef char tmp[2048]
+  cdef char basestem[2048]
+  cdef char seqDictID[2048]
   if seqDict is not None:
     ignorePrefix = True
   else:

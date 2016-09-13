@@ -128,7 +128,8 @@ cdef class IntervalDB:
 
 
 cdef class IntervalDBIterator:
-  cdef IntervalIterator *it,*it_alloc
+  cdef IntervalIterator *it
+  cdef IntervalIterator *it_alloc
   cdef IntervalMap im_buf[1024]
   cdef int ihit,nhit,start,end
   cdef IntervalDB db
@@ -141,7 +142,8 @@ cdef class IntervalFileDB:
 cdef class NLMSASequence
 
 cdef class IntervalFileDBIterator:
-  cdef IntervalIterator *it,*it_alloc
+  cdef IntervalIterator *it
+  cdef IntervalIterator *it_alloc
   cdef IntervalMap *im_buf
   cdef int ihit,nhit,start,end,nbuf
   cdef IntervalFileDB db
