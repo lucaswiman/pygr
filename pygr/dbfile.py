@@ -4,7 +4,10 @@ from collections import MutableMapping
 import shelve
 import sys
 
-import anydbm
+try:
+    import anydbm
+except ImportError:  # python 3
+    import dbm as anydbm
 
 from . import logger
 

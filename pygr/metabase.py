@@ -586,7 +586,10 @@ class ShelveMetabase(object):
     graph = ResourceDBGraphDescr() # INTERFACE TO SCHEMA GRAPH
 
     def __init__(self, dbpath, mdb, mode='r', newZone=None, **kwargs):
-        import anydbm
+        try:
+            import anydbm
+        except ImportError:
+            import dbm as anydbm
         self.dbpath = os.path.join(dbpath, '.pygr_data') # CONSTRUCT FILENAME
         self.mdb = mdb
         self.writeable = True # can write to this storage
