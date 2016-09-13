@@ -681,9 +681,9 @@ alignment intervals to an NLMSA after calling its build() method.''')
         left = mid + 1
       elif self.seqBounds[mid].target_id > id:
         right = mid
-      elif ori > 0 and seqBounds[mid].target_start < 0:
+      elif ori > 0 and self.seqBounds[mid].target_start < 0:
         left = mid + 1
-      elif ori < 0 and seqBounds[mid].target_start >= 0:
+      elif ori < 0 and self.seqBounds[mid].target_start >= 0:
         right = mid
       else: # MATCHES BOTH id AND ori
         return mid
@@ -1210,7 +1210,7 @@ cdef class NLMSANode:
 
   def __cmp__(self, other):
     if isinstance(other, NLMSANode):
-      return cmp((self.nlmsaSlice, ipos), (other.nlmsaSlice, ipos))
+      return cmp((self.nlmsaSlice, self.ipos), (other.nlmsaSlice, other.ipos))
     else:
       return -1
 
@@ -2236,6 +2236,14 @@ dictionary argument: %s''' % missing)
       import seqdb
       seqDict = seqdb.PrefixUnionDict(prefixDict)
     nlmsa_utils.save_seq_dict(basestem, seqDict) # SAVE SEQDICT
+
+    # Set invalid defaults to prevent `local variable 'n' referenced before assignment`
+    # errors in cython.
+    n = -1
+    nlmsaID = -1
+    nsID = -1
+    offset = -1
+
     for i from 0 <= i <n: # seqIDDict READING
       if fgets(line, 32767, infile) == NULL:
         raise IOError('error or EOF reading %s' % filename)
